@@ -59,9 +59,9 @@
     margin: 0 auto;
     z-index: 1030;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    background: rgba(0, 5, 15, 0.7) !important;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+  background: rgba(0, 5, 15, 0.45) !important;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
   }
   
   /* PC Screen Navbar Width Increase */

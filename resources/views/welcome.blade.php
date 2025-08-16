@@ -11,4 +11,6 @@
     <h2 class="mb-4">Welcome to RentTent</h2>
     <p>Your content goes here...</p>
   </div>
+
+  @include('includes.suggestions')
 @endsection
