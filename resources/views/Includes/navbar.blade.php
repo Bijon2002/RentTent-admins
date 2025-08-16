@@ -63,6 +63,38 @@
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
   }
+  
+  /* PC Screen Navbar Width Increase */
+  @media (min-width: 1367px) {
+    .floating-navbar {
+      max-width: 1400px;
+    }
+  }
+  
+  /* 4K Screen Support */
+  @media (min-width: 2560px) {
+    .floating-navbar {
+      max-width: 1800px;
+      height: 90px;
+    }
+    .logo-text {
+      font-size: 1.6rem !important;
+    }
+    .nav-link {
+      font-size: 1.1rem !important;
+    }
+    .signup-btn, .login-btn {
+      font-size: 1.1rem !important;
+      padding: 0.6rem 1.5rem !important;
+    }
+  }
+  
+  /* Laptop Screen Navbar Position */
+  @media (min-width: 1024px) and (max-width: 1366px) {
+    .floating-navbar {
+      top: 0.5cm;
+    }
+  }
 
   .floating-navbar .container {
     display: flex;
@@ -80,8 +112,8 @@
     left: 10%;
     right: 10%;
     height: 2px;
-    background: linear-gradient(90deg, rgba(0, 247, 255, 0), rgba(0, 247, 255, 0.7), rgba(0, 247, 255, 0));
-    box-shadow: 0 0 10px rgba(0, 247, 255, 0.7);
+    background: linear-gradient(90deg, rgba(77, 166, 255, 0), rgba(77, 166, 255, 0.7), rgba(77, 166, 255, 0));
+    box-shadow: 0 0 10px rgba(77, 166, 255, 0.7);
     animation: borderGlow 3s infinite alternate;
     border-radius: 50%;
   }
@@ -89,11 +121,11 @@
   @keyframes borderGlow {
     0% {
       opacity: 0.5;
-      box-shadow: 0 0 10px rgba(0, 247, 255, 0.5);
+      box-shadow: 0 0 10px rgba(77, 166, 255, 0.5);
     }
     100% {
       opacity: 1;
-      box-shadow: 0 0 15px rgba(0, 247, 255, 0.9);
+      box-shadow: 0 0 15px rgba(77, 166, 255, 0.9);
     }
   }
 
@@ -111,13 +143,14 @@
   }
 
   .navbar-brand:hover .logo-text {
-    color: #00f7ff;
-    text-shadow: 0 0 10px rgba(0, 247, 255, 0.7);
+    color: #4da6ff;
+    text-shadow: 0 0 10px rgba(77, 166, 255, 0.8),
+                 0 0 20px rgba(77, 166, 255, 0.6);
   }
 
   .navbar-brand:hover img {
-    box-shadow: 0 0 15px rgba(0, 247, 255, 0.5);
-    border-color: rgba(0, 247, 255, 0.7);
+    box-shadow: 0 0 15px rgba(77, 166, 255, 0.5);
+    border-color: rgba(77, 166, 255, 0.7);
   }
 
   /* Nav links */
@@ -131,9 +164,36 @@
     padding: 0.5rem 0;
   }
 
+  .nav-link {
+    color: rgba(255, 255, 255, 0.8) !important;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: all 0.3s ease;
+    padding: 0.5rem 0;
+    position: relative;
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: #4da6ff;
+    transition: all 0.3s ease;
+  }
+
   .nav-link:hover {
-    color: #00f7ff !important;
-    text-shadow: 0 0 10px rgba(0, 247, 255, 0.5);
+    color: rgba(255, 255, 255, 0.9) !important;
+    text-shadow: 0 0 10px rgba(77, 166, 255, 0.8),
+                 0 0 20px rgba(77, 166, 255, 0.6);
+  }
+
+  .nav-link:hover::after {
+    width: 100%;
   }
 
   .nav-link i {
@@ -141,8 +201,9 @@
   }
 
   .nav-link:hover i {
-    color: #00f7ff;
-    text-shadow: 0 0 10px rgba(0, 247, 255, 0.5);
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 0 10px rgba(77, 166, 255, 0.8),
+                 0 0 20px rgba(77, 166, 255, 0.6);
   }
 
   /* Buttons */
@@ -156,10 +217,10 @@
   }
 
   .signup-btn:hover {
-    background: rgba(0, 247, 255, 0.1);
-    border-color: #00f7ff;
-    box-shadow: 0 0 15px rgba(0, 247, 255, 0.3);
-    color: #00f7ff;
+    background: rgba(77, 166, 255, 0.1);
+    border-color: #4da6ff;
+    box-shadow: 0 0 15px rgba(77, 166, 255, 0.3);
+    color: #4da6ff;
   }
 
   .login-btn {
@@ -172,10 +233,10 @@
   }
 
   .login-btn:hover {
-    background: rgba(0, 247, 255, 0.2);
-    box-shadow: 0 0 20px rgba(0, 247, 255, 0.4);
-    border-color: #00f7ff;
-    color: #00f7ff;
+    background: rgba(77, 166, 255, 0.2);
+    box-shadow: 0 0 20px rgba(77, 166, 255, 0.4);
+    border-color: #4da6ff;
+    color: #4da6ff;
   }
 
   /* Body padding so content doesn't go under navbar */

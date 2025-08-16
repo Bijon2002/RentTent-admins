@@ -63,9 +63,9 @@
         <form class="mb-3">
           <div class="input-group">
             <input type="email" class="form-control bg-medium-blue border-0 text-white" placeholder="Your Email" style="height: 45px;">
-            <button class="btn btn-light-blue text-white" type="submit" style="background-color: #4da6ff; height: 45px;">
-              <i class="fas fa-paper-plane"></i>
-            </button>
+                    <button class="btn btn-light-blue text-white newsletter-btn" type="submit" style="background-color: #4da6ff; height: 45px;">
+          <i class="fas fa-paper-plane"></i>
+        </button>
           </div>
         </form>
         <small class="text-white-50">We'll never share your email with anyone else.</small>
@@ -169,10 +169,10 @@
   }
   
   /* Platform-specific colors on hover */
-  .facebook:hover { color: #1877f2 !important; }
+  .facebook:hover { color: #0a1f3d !important; }
   .twitter:hover { color: #1da1f2 !important; }
   .instagram:hover { color: #e1306c !important; }
-  .linkedin:hover { color: #0077b5 !important; }
+  .linkedin:hover { color: #0a1f3d !important; }
   
   .input-group:focus-within {
     box-shadow: 0 0 0 0.25rem rgba(77, 166, 255, 0.25);
@@ -187,6 +187,15 @@
   
   .text-white-50 {
     color: rgba(255, 255, 255, 0.7);
+  }
+  
+  .newsletter-btn {
+    transition: all 0.3s ease;
+  }
+  
+  .newsletter-btn:hover {
+    background: linear-gradient(135deg, #4da6ff, #3a8de0) !important;
+    transform: translateY(-1px);
   }
 </style>
 
