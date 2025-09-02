@@ -2,7 +2,16 @@
 
 @section('content')
 <div class="signup-page d-flex align-items-center justify-content-center" 
-  style="min-height:100vh; background: #f5f7fa; margin-top:1.5cm;">
+  style="min-height:100vh; margin-top:4cm; background: linear-gradient(120deg, #0a2540, #4f8cff, #0a2540); background-size: 200% 200%; animation: gradientMove 8s ease-in-out infinite;">
+<style>
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+</style>
   
   <div class="card shadow-lg border-0 rounded-4 overflow-hidden" style="max-width: 1200px; width:100%;">
     <div class="row g-0">
