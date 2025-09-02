@@ -92,8 +92,8 @@ window.onclick = function(event) {
 
 <!-- Rooms Suggestions Section -->
 <div class="container-fluid px-0 my-5">
-  <h2 class="mb-4 fw-bold text-center" style="color:#0a1f3d;">Room Suggestions</h2>
-  <p class="text-center text-muted mb-4" style="font-size:1.1rem;">Find your perfect space for comfort and peace.</p>
+  <h2 class="mb-4 fw-bold text-center" style="color: #fff;">Room Suggestions</h2>
+  <p class="text-center mb-4" style="font-size:1.1rem; color: #ffd600;">Find your perfect space for comfort and peace.</p>
   <div class="row g-4 justify-content-center">
     
     <!-- Room Suggestions (12 cards) -->
@@ -116,12 +116,12 @@ window.onclick = function(event) {
     @endfor
 </div>
 
-<hr class="my-4" style="border: none; border-top: 1.5px solid #0a1f3d; opacity: 0.5; width: 60%; margin: 0 auto;" />
+  <hr class="my-4" style="border: none; border-top: 2px solid #fff; width: 60%; margin: 32px auto; opacity: 1;" />
 
 <!-- Food Vendor Suggestions Section -->
-<div class="container-fluid px-0 my-5">
-  <h2 class="mb-4 fw-bold text-center" style="color:#0a1f3d;">Food Vendor Suggestions</h2>
-  <p class="text-center text-muted mb-4" style="font-size:1.1rem;">Delicious meals from trusted local vendors.</p>
+<div class="container-fluid px-0 my-3">
+  <h2 class="mb-4 fw-bold text-center" style="color: #fff;">Food Vendor Suggestions</h2>
+  <p class="text-center mb-4" style="font-size:1.1rem; color: #ffd600;">Delicious meals from trusted local vendors.</p>
   <div class="row row-cols-1 row-cols-md-3 g-3 justify-content-center">
 
     <!-- Food Vendor Suggestions (12 cards) -->
