@@ -2,71 +2,155 @@
 
 @section('content')
 @php
-    $user = session('user');
+    use App\Models\User;
+    $userId = session('user_id');
+    $user = $userId ? User::find($userId) : null;
+    if (!$user) {
+        $user = auth()->user();
+    }
 @endphp
 
-<div class="d-flex align-items-start justify-content-center w-100" 
-    style="min-height:100vh; background: linear-gradient(120deg, #0a2540, #4f8cff, #0a2540); background-size: 200% 200%; animation: gradientMove 8s ease-in-out infinite; padding-top:50px;">
+<div class="d-flex align-items-center justify-content-center w-100 py-5" 
+    style="min-height:100vh; background: linear-gradient(120deg, #0a2540, #4f8cff, #0a2540); background-size: 200% 200%; animation: gradientMove 8s ease-in-out infinite;">
 
-    <div class="card shadow-lg border-0 rounded-4 text-center p-4"
-         style="max-width:600px; width:100%; background:white;">
+    <div class="card shadow-lg border-0 rounded-4 p-4"
+         style="max-width:1000px; width:100%; background:white; position:relative; left:1cm; top:2cm; margin-bottom:8rem; margin-left:auto; margin-right:auto;">
 
-        <!-- Profile Image + Edit Icon -->
-        <div class="mb-3 d-flex justify-content-center">
-            <div class="position-relative d-inline-block" style="width:120px; height:120px;">
-             <img src="{{ isset($user['profile_pic']) && $user['profile_pic'] ? asset('storage/' . $user['profile_pic']) : asset('img/default-user.png') }}"
-                 class="squircle-img border-4 border-white shadow"
-                 style="width:120px; height:120px; object-fit:cover; border-radius:30% / 40%;">
-                <button type="button" id="mainEditBtn" class="btn btn-link p-0 position-absolute"
-                    style="bottom:10px; right:10px; font-size:1.8rem; background:rgba(255,255,255,0.7); border-radius:50%; width:36px; height:36px; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 8px rgba(0,0,0,0.12);"
-                    title="Edit Profile">
-                    <i class="bi bi-pencil-square text-primary"></i>
+    <!-- Profile Header -->
+    <div class="d-flex align-items-center mb-4">
+            <div class="position-relative me-4">
+                <img src="{{ $user && $user->profile_pic ? asset('storage/' . $user->profile_pic) : asset('img/default-user.png') }}"
+                     class="rounded-circle border border-4 border-white shadow"
+                     style="width:120px; height:120px; object-fit:cover;">
+                <button class="btn btn-primary rounded-circle p-2 position-absolute bottom-0 end-0" 
+                        data-bs-toggle="modal" data-bs-target="#profileModal"
+                        style="width:36px; height:36px;">
+                    <i class="bi bi-pencil-fill"></i>
                 </button>
+            </div>
+            <div class="text-start">
+                <h4 class="fw-bold mb-1">{{ $user ? $user->name : 'Unknown User' }}</h4>
+                <p class="text-muted mb-0">{{ $user ? ucfirst($user->role) : '' }}</p>
+                <p class="text-muted">
+                    Member since {{ $user ? $user->created_at->format('F Y') : '' }}
+                </p>
+                    <!-- Hamburger Icon right side -->
+                    <button id="sidebarToggle" class="btn position-absolute" style="top:2.5rem; right:2rem; z-index:110; background:transparent; border:none;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="black" class="bi bi-list" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M2.5 12.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1h-10a.5.5 0 0 1-.5-.5zm0-5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1h-10a.5.5 0 0 1-.5-.5zm0-5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1h-10a.5.5 0 0 1-.5-.5z"/>
+                        </svg>
+                    </button>
             </div>
         </div>
 
-        <!-- Name + username -->
-    <h4 class="fw-bold mb-1">{{ $user['name'] ?? 'Unknown User' }}</h4>
-
         <!-- Profile Info -->
-        <form method="POST" action="{{ route('profile.update') }}" id="inlineEditForm">
-            @csrf
-            <div class="text-start px-4 mt-4">
-                <div class="d-flex justify-content-between align-items-center border-bottom py-2">
-                    <strong>Username</strong>
-                    <span class="field-text" id="name-text">{{ $user['name'] ?? '' }}</span>
-                    <input type="text" class="form-control field-input d-none" name="name" id="name-input" value="{{ $user['name'] ?? '' }}">
-                </div>
-                <div class="d-flex justify-content-between align-items-center border-bottom py-2">
-                    <strong>Email</strong>
-                    <span class="field-text" id="email-text">{{ $user['email'] ?? '' }}</span>
-                    <input type="email" class="form-control field-input d-none" name="email" id="email-input" value="{{ $user['email'] ?? '' }}">
-                </div>
-                <div class="d-flex justify-content-between align-items-center border-bottom py-2">
-                    <strong>Address</strong>
-                    <span class="field-text" id="location-text">{{ $user['location'] ?? '' }}</span>
-                    <input type="text" class="form-control field-input d-none" name="location" id="location-input" value="{{ $user['location'] ?? '' }}">
-                </div>
-                <div class="d-flex justify-content-between align-items-center border-bottom py-2">
-                    <strong>NIC</strong>
-                    <span class="field-text" id="nic_number-text">{{ $user['nic_number'] ?? '' }}</span>
-                    <input type="text" class="form-control field-input d-none" name="nic_number" id="nic_number-input" value="{{ $user['nic_number'] ?? '' }}">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <div class="border rounded-3 p-3 h-100">
+                    <h6 class="fw-bold text-primary mb-3">Personal Information</h6>
+                    
+                    <div class="d-flex justify-content-between border-bottom py-2">
+                        <strong>Email</strong>
+                        <span>{{ $user->email ?? 'N/A' }}</span>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between border-bottom py-2">
+                        <strong>Phone</strong>
+                        <span>{{ $user->phone ?? 'N/A' }}</span>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between border-bottom py-2">
+                        <strong>NIC</strong>
+                        <span>{{ $user->nic_number ?? 'N/A' }}</span>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between py-2">
+                        <strong>Location</strong>
+                        <span>{{ $user->location ?? 'N/A' }}</span>
+                    </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-end px-4 mt-3">
-                <button type="submit" class="btn btn-success rounded-pill px-4 py-2 fw-bold d-none" id="saveBtn">Save Changes</button>
-                <button type="button" class="btn btn-secondary rounded-pill px-4 py-2 fw-bold d-none" id="cancelBtn">Cancel</button>
+            
+            <div class="col-md-6 mb-3">
+                <div class="border rounded-3 p-3 h-100">
+                    <h6 class="fw-bold text-primary mb-3">Account Status</h6>
+                    
+                    <div class="d-flex justify-content-between border-bottom py-2">
+                        <strong>Verification</strong>
+                        <span class="badge bg-{{ $user->verification_status === 'verified' ? 'success' : 'warning' }}">
+                            {{ ucfirst($user->verification_status ?? 'pending') }}
+                        </span>
+                    </div>
+                    
+                    <!-- NIC Image Preview -->
+                    @if($user && $user->nic_image)
+                    <div class="mt-3">
+                        <strong>NIC Image:</strong>
+                        <div class="mt-2">
+                            <img src="{{ asset('storage/' . $user->nic_image) }}" 
+                                 alt="NIC Image" 
+                                 class="img-fluid rounded-3 border"
+                                 style="max-height: 120px;">
+                        </div>
+                    </div>
+                    @endif
+                </div>
             </div>
-        </form>
+        </div>
     </div>
+<!-- Edit Profile Modal -->
+<div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Profile</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">
+                @csrf
+                @method('PUT') <!-- Important for PUT route -->
 
-    <!-- ...existing code... -->
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="name" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="name" name="name" value="{{ auth()->user()->name }}">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" value="{{ auth()->user()->email }}">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="phone" class="form-label">Phone</label>
+                            <input type="text" class="form-control" id="phone" name="phone" value="{{ auth()->user()->phone }}">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="nic_number" class="form-label">NIC Number</label>
+                            <input type="text" class="form-control" id="nic_number" name="nic_number" value="{{ auth()->user()->nic_number }}">
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="location" class="form-label">Location</label>
+                            <input type="text" class="form-control" id="location" name="location" value="{{ auth()->user()->location }}">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="profile_pic" class="form-label">Profile Picture</label>
+                            <input type="file" class="form-control" id="profile_pic" name="profile_pic">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="nic_image" class="form-label">NIC Image</label>
+                            <input type="file" class="form-control" id="nic_image" name="nic_image">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
-
-<!-- Bootstrap Icons -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-
-<script>
 
 <style>
 @keyframes gradientMove {
@@ -74,41 +158,9 @@
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
 }
+
+.squircle-img {
+    border-radius: 30% / 40%;
+}
 </style>
-    const mainEditBtn = document.getElementById('mainEditBtn');
-    const saveBtn = document.getElementById('saveBtn');
-    const cancelBtn = document.getElementById('cancelBtn');
-    const fieldTexts = document.querySelectorAll('.field-text');
-    const fieldInputs = document.querySelectorAll('.field-input');
-
-    let editing = false;
-    let originalValues = {};
-
-    mainEditBtn.addEventListener('click', function() {
-        if (!editing) {
-            editing = true;
-            // Save original values
-            fieldInputs.forEach(input => {
-                originalValues[input.id] = input.value;
-            });
-            // Hide all texts and show all inputs
-            fieldTexts.forEach(text => text.classList.add('d-none'));
-            fieldInputs.forEach(input => input.classList.remove('d-none'));
-            saveBtn.classList.remove('d-none');
-            cancelBtn.classList.remove('d-none');
-        }
-    });
-
-    cancelBtn.addEventListener('click', function() {
-        editing = false;
-        // Restore original values
-        fieldInputs.forEach(input => {
-            input.value = originalValues[input.id];
-            input.classList.add('d-none');
-        });
-        fieldTexts.forEach(text => text.classList.remove('d-none'));
-        saveBtn.classList.add('d-none');
-        cancelBtn.classList.add('d-none');
-    });
-</script>
 @endsection

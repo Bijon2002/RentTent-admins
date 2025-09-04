@@ -1,16 +1,13 @@
 @extends('Layout.master')
 
 @section('content')
-<div class="signup-page d-flex align-items-center justify-content-center" 
-          style="min-height:100vh; margin-top:4cm; background: linear-gradient(120deg, #0a2540, #4f8cff, #0a2540); background-size: 200% 200%; animation: gradientMove 8s ease-in-out infinite;">
+<div class="signup-page d-flex align-items-center justify-content-center" style="min-height:100vh; background: transparent;">
 <style>
-
-@keyframes gradientMove {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+@media (min-width: 1200px) {
+  .signup-page {
+    margin-top: 1cm !important;
+  }
 }
-
 </style>
   
   <!-- Floating error popup -->
@@ -35,7 +32,7 @@
     <div class="row g-0">
       
       <!-- Left Section (Form) -->
-      <div class="col-md-6 p-5 bg-white" style="height: 600px; overflow-y: auto;">
+  <div class="col-md-6 p-5 bg-transparent" style="height: 600px; overflow-y: auto; background: transparent;">
         <div class="text-center mb-4">
           <h2 class="fw-bold">Welcome Back</h2>
           <p class="text-muted">Sign in to your account</p>
