@@ -187,7 +187,6 @@
    
   </div>
 <br>
-
   <div class="login-container">
     <!-- Your logo image -->
     <img src="{{ asset('images/logo2.png') }}" alt="RentTent Logo" class="logo" />

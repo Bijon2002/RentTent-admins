@@ -3,88 +3,94 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Http\Request;
+use GuzzleHttp\Client;
 
 class UserController extends Controller
 {
-    // List all users
+    /**
+     * Display all users via API from the users project.
+     */
     public function index()
     {
-        $users = User::all();
-        return view('admin.users.index', compact('users'));
-    }
+        $token = "1|KM6z0xFl4T2pKGW2sELviH1pJcjUo891i5pQFlnD002a272e"; // Sanctum token from users project
+        $client = new Client();
 
-    // Show form to create new user
-    public function create()
-    {
-        return view('admin.users.create');
-    }
+        try {
+            $response = $client->get('http://127.0.0.1:8001/api/users', [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $token,
+                    'Accept' => 'application/json',
+                ]
+            ]);
 
-    // Store new user
-    public function store(Request $request)
-    {
-        $request->validate([
-            'name'       => 'required',
-            'email'      => 'required|email|unique:users,email',
-            'password'   => 'required|min:6',
-            'role'       => 'required|in:finder,provider,vendor',
-            'nic_number' => 'required|unique:users,nic_number',
-            // Add more validation as needed
-        ]);
+            $users = json_decode($response->getBody(), true);
 
-        User::create([
-            'name'        => $request->name,
-            'email'       => $request->email,
-            'password'    => bcrypt($request->password),
-            'role'        => $request->role,
-            'nic_number'  => $request->nic_number,
-            'phone'       => $request->phone,
-            'profile_pic' => $request->profile_pic,
-            'location'    => $request->location,
-        ]);
+            // Fallback for missing images
+            foreach($users as &$user) {
+                $user['profile_pic_url'] = $user['profile_pic_url'] ?? 'https://via.placeholder.com/150';
+                $user['nic_image_url'] = $user['nic_image_url'] ?? 'https://via.placeholder.com/250x150';
+            }
 
-        return redirect()->route('admin.users.index')->with('success', 'User created');
-    }
-
-    // Show single user
-    public function show(User $user)
-    {
-        return view('admin.users.show', compact('user'));
-    }
-
-    // Show edit form
-    public function edit(User $user)
-    {
-        return view('admin.users.edit', compact('user'));
-    }
-
-    // Update user
-    public function update(Request $request, User $user)
-    {
-        $request->validate([
-            'name'       => 'required',
-            'email'      => 'required|email|unique:users,email,' . $user->user_id . ',user_id',
-            'role'       => 'required|in:finder,provider,vendor',
-            'nic_number' => 'required|unique:users,nic_number,' . $user->user_id . ',user_id',
-            'password'   => 'nullable|min:6',
-        ]);
-
-        $data = $request->only('name', 'email', 'phone', 'location', 'role', 'nic_number', 'profile_pic');
-
-        if ($request->filled('password')) {
-            $data['password'] = bcrypt($request->password);
+        } catch (\Exception $e) {
+            $users = [];
+            session()->flash('error', 'Unable to fetch users from API: ' . $e->getMessage());
         }
 
-        $user->update($data);
-
-        return redirect()->route('admin.users.index')->with('success', 'User updated');
+        return view('pages.users', compact('users'));
     }
 
-    // Delete user
-    public function destroy(User $user)
+    /**
+     * Update a user's details via users project API.
+     */
+    public function update(Request $request, $user_id)
     {
-        $user->delete();
-        return redirect()->route('admin.users.index')->with('success', 'User deleted');
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email',
+            'phone' => 'required|string|max:20',
+            'nic_number' => 'required|string|max:50',
+            'role' => 'required|in:finder,provider,vendor',
+            'location' => 'required|string|max:255',
+            'verification_status' => 'required|in:Pending,Verified,Manual Review,Rejected',
+        ]);
+
+        $token = "1|KM6z0xFl4T2pKGW2sELviH1pJcjUo891i5pQFlnD002a272e";
+        $client = new Client();
+        $client->patch("http://127.0.0.1:8001/api/user/{$user_id}", [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $token,
+                'Accept' => 'application/json',
+            ],
+            'form_params' => $request->only([
+                'name', 'email', 'phone', 'nic_number', 'role', 'location', 'verification_status'
+            ])
+        ]);
+
+        return redirect()->route('admin.users.index')
+                         ->with('success', 'User updated successfully via API');
+    }
+
+    /**
+     * Delete a user via users project API.
+     */
+    public function destroy($user_id)
+    {
+        $token = "1|KM6z0xFl4T2pKGW2sELviH1pJcjUo891i5pQFlnD002a272e";
+        $client = new Client();
+
+        try {
+            $client->delete("http://127.0.0.1:8001/api/user/{$user_id}", [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $token,
+                    'Accept' => 'application/json',
+                ]
+            ]);
+        } catch (\Exception $e) {
+            session()->flash('error', 'Unable to delete user via API: ' . $e->getMessage());
+        }
+
+        return redirect()->route('admin.users.index')
+                         ->with('success', 'User deleted successfully via API');
     }
 }
