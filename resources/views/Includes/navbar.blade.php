@@ -1,5 +1,16 @@
 @php
 use Illuminate\Support\Facades\Auth;
+
+// Get user safely
+$userSession = session('user');
+$user = $userSession ? (object) $userSession : Auth::user();
+
+// Safe helpers
+$profilePic = isset($userSession['profile_pic']) ? asset('storage/profile_pics/' . basename($userSession['profile_pic'])) 
+               : ($user && $user->profile_pic ? asset('storage/profile_pics/' . basename($user->profile_pic)) 
+               : asset('img/default-user.png'));
+
+$role = isset($userSession['role']) ? $userSession['role'] : ($user->role ?? null);
 @endphp
 
 <nav class="navbar navbar-expand-lg custom-navbar floating-navbar">
@@ -27,18 +38,16 @@ use Illuminate\Support\Facades\Auth;
 
     <!-- Right Buttons / Profile -->
     <div class="d-flex gap-2 align-items-center">
-      @if(session('user'))
-        <!-- Logged-in user -->
+      @if($user)
         <div class="dropdown">
           <a class="d-flex align-items-center" href="{{ route('profile') }}" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="{{ session('user.profile_pic') ? asset('storage/' . session('user.profile_pic')) : asset('img/default-user.png') }}" 
-                 class="rounded-circle" style="width:40px; height:40px; object-fit:cover;">
+            <img src="{{ $profilePic }}" class="rounded-circle" style="width:40px; height:40px; object-fit:cover;">
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
             <li><a class="dropdown-item" href="{{ route('profile') }}">Profile</a></li>
-            @if(session('user.role') === 'provider')
+            @if($role === 'provider')
               <li><a class="dropdown-item" href="{{ route('provider.options') }}">Provider Options</a></li>
-            @elseif(session('user.role') === 'vendor')
+            @elseif($role === 'vendor')
               <li><a class="dropdown-item" href="{{ route('vendor.options') }}">Vendor Options</a></li>
             @endif
             <li>
@@ -50,13 +59,14 @@ use Illuminate\Support\Facades\Auth;
           </ul>
         </div>
       @else
-        <!-- Not logged-in -->
         <a href="{{ route('register') }}" class="btn signup-btn">Signup</a>
         <a href="{{ route('login') }}" class="btn login-btn">Login</a>
       @endif
     </div>
   </div>
 </nav>
+
+
 
 <!-- Styles -->
 <style>

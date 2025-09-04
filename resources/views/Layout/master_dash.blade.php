@@ -64,7 +64,7 @@
 
   <div class="container-fluid p-0" style="min-height:100vh;">
     <div class="row g-0" style="min-height:100vh;">
-  <div class="sidebar d-flex flex-column justify-content-between p-3" style="width:5cm; background:rgba(10,25,41,0.7); min-height:100vh; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); position: absolute; left: 0; top: 0; height: 100vh; z-index: 10;">
+  <div id="sidebar" class="sidebar d-flex flex-column justify-content-between p-3" style="width:5cm; background:rgba(10,25,41,0.7); min-height:100vh; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); position: fixed; left: 0; top: 0; height: 100vh; z-index: 10; transform: translateX(-100%); transition: transform 0.3s;">
         <!-- Sidebar content -->
         <div>
           <div class="text-center mb-4" style="margin-top:3cm;">
@@ -73,9 +73,15 @@
             <span class="badge bg-primary">{{ ucfirst(session('user.role') ?? 'Guest') }}</span>
           </div>
           <ul class="nav flex-column gap-2">
-            <li class="nav-item"><a href="#" class="nav-link text-light">Dashboard</a></li>
-            <li class="nav-item"><a href="#" class="nav-link text-light">Profile</a></li>
-            <li class="nav-item"><a href="#" class="nav-link text-light">Settings</a></li>
+            <li class="nav-item">
+              <a href="{{ route('profile') }}" class="nav-link {{ request()->routeIs('profile') ? 'fw-bold text-warning' : 'text-light' }}">Profile</a>
+            </li>
+            <li class="nav-item">
+              <a href="#" id="sidebarBoardingList" class="nav-link text-light">Boarding List</a>
+            </li>
+            <li class="nav-item">
+              <a href="#" id="sidebarSubscribedFoods" class="nav-link text-light">Subscribed Foods</a>
+            </li>
           </ul>
         </div>
         <div>
@@ -84,8 +90,8 @@
             <button type="submit" class="btn btn-danger w-100 mt-3">Logout</button>
           </form>
         </div>
-      </div>
-      <div class="col-lg-9 col-md-8 main-content d-flex align-items-center justify-content-center p-0" style="background:transparent; min-height:100vh;">
+  </div>
+  <div class="col-lg-9 col-md-8 main-content d-flex align-items-center justify-content-center p-0" style="background:transparent; min-height:100vh; margin-left:0;">
         @yield('content')
       </div>
     </div>
@@ -96,6 +102,17 @@
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebar = document.getElementById('sidebar');
+    sidebarToggle.addEventListener('click', function() {
+      if (sidebar.style.transform === 'translateX(0%)') {
+        sidebar.style.transform = 'translateX(-100%)';
+      } else {
+        sidebar.style.transform = 'translateX(0%)';
+      }
+    });
+  </script>
 <button id="chatbot-float-btn" title="Chatbot">
   <img src="{{ asset('img/bot2.gif') }}" alt="Chatbot" style="width: 80px; height: 80px; display: block;">
 </button>

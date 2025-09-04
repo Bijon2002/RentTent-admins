@@ -51,9 +51,9 @@
 <style>
   .fullscreen-slideshow {
    height: calc(122vh - 1cm - 60px); /* reduced height by 1cm */
-  margin-top: calc(-1 * (1cm + 60px)); /* adjust margin to match height change */
-  position: relative; /* ensure stacking context */
-  overflow: hidden;
+   margin-top: calc(-1 * (1cm + 60px)); /* adjust margin to match height change */
+   position: relative; /* ensure stacking context */
+   overflow: hidden;
   }
   .slide {
     position: absolute;
