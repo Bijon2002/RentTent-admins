@@ -1,28 +1,31 @@
 <div class="fullscreen-slideshow w-100">
-  <!-- Slide 1 -->
-  <div class="slide position-absolute w-100 h-100" 
-       style="background: url('https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80') center/cover;">
-    <div class="content position-absolute slide-content slide-content-first">
-      <h2 class="text-white display-4 fw-bold mb-3 neon-text">Premium Camping</h2>
-      <p class="text-light-blue fs-3">Luxury tents with premium amenities</p>
+  <!-- Slides Container -->
+  <div class="slides-container position-relative w-100 h-100" style="overflow: hidden;">
+    <!-- Slide 1 -->
+    <div class="slide position-absolute w-100 h-100" 
+         style="background: url('https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80') center/cover;">
+      <div class="content position-absolute slide-content slide-content-first">
+        <h2 class="text-white display-4 fw-bold mb-3 neon-text">Premium Camping</h2>
+        <p class="text-light-blue fs-3">Luxury tents with premium amenities</p>
+      </div>
     </div>
-  </div>
 
-  <!-- Slide 2 -->
-  <div class="slide position-absolute w-100 h-100" 
-       style="background: url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80') center/cover;">
-    <div class="content position-absolute slide-content slide-content-right">
-      <h2 class="text-white display-4 fw-bold mb-3 neon-text">Gourmet Food</h2>
-      <p class="text-light-blue fs-3">From top local vendors</p>
+    <!-- Slide 2 -->
+    <div class="slide position-absolute w-100 h-100" 
+         style="background: url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80') center/cover;">
+      <div class="content position-absolute slide-content slide-content-right">
+        <h2 class="text-white display-4 fw-bold mb-3 neon-text">Gourmet Food</h2>
+        <p class="text-light-blue fs-3">From top local vendors</p>
+      </div>
     </div>
-  </div>
 
-  <!-- Slide 3 -->
-  <div class="slide position-absolute w-100 h-100" 
-       style="background: url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80') center/cover;">
-    <div class="content position-absolute slide-content slide-content-center">
-      <h2 class="text-white display-4 fw-bold mb-3 neon-text">24/7 Health Support</h2>
-      <p class="text-light-blue fs-3">Medical chat assistance anytime</p>
+    <!-- Slide 3 -->
+    <div class="slide position-absolute w-100 h-100" 
+         style="background: url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80') center/cover;">
+      <div class="content position-absolute slide-content slide-content-center">
+        <h2 class="text-white display-4 fw-bold mb-3 neon-text">24/7 Health Support</h2>
+        <p class="text-light-blue fs-3">Medical chat assistance anytime</p>
+      </div>
     </div>
   </div>
 
@@ -55,19 +58,46 @@
    position: relative; /* ensure stacking context */
    overflow: hidden;
   }
+  
+  /* New container for slides */
+  .slides-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  
   .slide {
     position: absolute;
     top: 0;
     left: 0;
-    opacity: 0;
     width: 100%;
     height: 100%;
     background-size: cover;
     background-position: center;
-    transition: opacity 1.5s ease-in-out;
+    transition: transform 1.2s cubic-bezier(0.65, 0, 0.35, 1);
+    z-index: 0;
+    transform: translateX(100%);
+  }
+  
+  /* Active slide */
+  .slide.active {
+    transform: translateX(0);
+    z-index: 2;
+  }
+  
+  /* Previous slide */
+  .slide.prev {
+    transform: translateX(-100%);
+    z-index: 1;
+  }
+  
+  /* Next slide (preparing to enter) */
+  .slide.next {
+    transform: translateX(100%);
     z-index: 0;
   }
-  .slide.active { opacity: 1; z-index: 1; }
+  
   .neon-text {
     text-shadow: 0 0 10px rgba(77, 166, 255, 0.8),
                  0 0 20px rgba(77, 166, 255, 0.6);
@@ -379,16 +409,40 @@
 document.addEventListener('DOMContentLoaded', function() {
   const slides = document.querySelectorAll('.slide');
   let currentSlide = 0;
+  let slideCount = slides.length;
 
-  if (slides.length) {
+  if (slideCount) {
+    // Initialize slides
     slides[0].classList.add('active');
+    for (let i = 1; i < slideCount; i++) {
+      slides[i].classList.add('next');
+    }
+    
     setTimeout(changeSlide, 5000);
   }
 
   function changeSlide() {
+    // Get current, next, and previous slide indices
+    const nextSlide = (currentSlide + 1) % slideCount;
+    const prevSlide = currentSlide;
+    
+    // Update classes for animation
     slides[currentSlide].classList.remove('active');
-    currentSlide = (currentSlide + 1) % slides.length;
-    slides[currentSlide].classList.add('active');
+    slides[currentSlide].classList.add('prev');
+    
+    slides[nextSlide].classList.remove('next');
+    slides[nextSlide].classList.add('active');
+    
+    // After animation completes, reset the previous slide
+    setTimeout(() => {
+      slides[prevSlide].classList.remove('prev');
+      slides[prevSlide].classList.add('next');
+    }, 1200); // Match the CSS transition duration
+    
+    // Update current slide index
+    currentSlide = nextSlide;
+    
+    // Schedule next slide change
     setTimeout(changeSlide, 5000);
   }
 });

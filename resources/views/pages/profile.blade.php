@@ -77,9 +77,9 @@
                     
                     <div class="d-flex justify-content-between border-bottom py-2">
                         <strong>Verification</strong>
-                        <span class="badge bg-{{ $user->verification_status === 'verified' ? 'success' : 'warning' }}">
-                            {{ ucfirst($user->verification_status ?? 'pending') }}
-                        </span>
+                       <span class="badge bg-{{ strtolower($user->verification_status) === 'verified' ? 'success' : 'warning' }}">
+    {{ ucfirst($user->verification_status ?? 'pending') }}
+</span>
                     </div>
                     
                     <!-- NIC Image Preview -->

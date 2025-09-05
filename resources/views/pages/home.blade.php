@@ -6,4 +6,5 @@
   <h1>Welcome to RentTent</h1>
   @include('includes.Sidebar') 
   <!-- Your page content -->
+   
 @endsection

@@ -54,23 +54,49 @@
       .sidebar.active { width: 250px; }
       .main-content { margin-left: 0; width: 100%; }
     }
+
+    .animated-gradient-bg {
+      background: url('{{ asset('img/bacck.jpg') }}') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    #chatbot-float-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      background: #fff;
+      border: none;
+      border-radius: 30px;
+      width: 60px;
+      height: 60px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.18s cubic-bezier(0.4,0.2,0.2,1);
+    }
+    #chatbot-float-btn:hover {
+      transform: translateY(-7px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
   </style>
 </head>
 
-<body>
 <body class="animated-gradient-bg">
   {{-- Navbar --}}
-    @include('Includes.navbar')
+  @include('Includes.navbar')
 
   <div class="container-fluid p-0" style="min-height:100vh;">
     <div class="row g-0" style="min-height:100vh;">
-  <div id="sidebar" class="sidebar d-flex flex-column justify-content-between p-3" style="width:5cm; background:rgba(10,25,41,0.7); min-height:100vh; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); position: fixed; left: 0; top: 0; height: 100vh; z-index: 10; transform: translateX(-100%); transition: transform 0.3s;">
+      <div id="sidebar" class="sidebar d-flex flex-column justify-content-between p-3" style="width:5cm; background:rgba(10,25,41,0.7); min-height:100vh; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); position: fixed; left: 0; top: 0; height: 100vh; z-index: 10; transform: translateX(-100%); transition: transform 0.3s;">
         <!-- Sidebar content -->
         <div>
           <div class="text-center mb-4" style="margin-top:3cm;">
             <img src="{{ session('user.profile_pic') ? asset('storage/' . session('user.profile_pic')) : asset('img/default-user.png') }}" class="rounded-circle mb-2" style="width:80px; height:80px; object-fit:cover;">
             <h5 class="fw-bold text-light">{{ session('user.name') ?? 'User' }}</h5>
-            <span class="badge bg-primary">{{ ucfirst(session('user.role') ?? 'Guest') }}</span>
+            <span class="badge bg-primary">{{ session('user.role') ? ucfirst(session('user.role')) : ($user ? ucfirst($user->role) : 'Guest') }}</span>
           </div>
           <ul class="nav flex-column gap-2">
             <li class="nav-item">
@@ -90,8 +116,9 @@
             <button type="submit" class="btn btn-danger w-100 mt-3">Logout</button>
           </form>
         </div>
-  </div>
-  <div class="col-lg-9 col-md-8 main-content d-flex align-items-center justify-content-center p-0" style="background:transparent; min-height:100vh; margin-left:0;">
+      </div>
+
+      <div class="col-lg-9 col-md-8 main-content d-flex align-items-center justify-content-center p-0" style="background:transparent; min-height:100vh; margin-left:0;">
         @yield('content')
       </div>
     </div>
@@ -100,78 +127,48 @@
   {{-- Footer --}}
   @include('includes.footer')
 
-  <!-- Bootstrap JS -->
+  <!-- Floating Chatbot Button -->
+  <button id="chatbot-float-btn" title="Chatbot">
+    <img src="{{ asset('img/bott.gif') }}" alt="Chatbot" style="width: 54px; height: 54px;">
+  </button>
+
+  <!-- Chat Window with Botpress iframe -->
+  <div id="chat-window" style="display:none; position:fixed; bottom:90px; right:24px; width:400px; height:500px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.2); background:#fff; z-index:9999; flex-direction:column;">
+    <div id="chat-header" style="padding:10px; background:#0a2540; color:#fff; font-weight:bold; border-top-left-radius:12px; border-top-right-radius:12px;">
+      RentTent Chat
+      <span id="close-chat" style="float:right; cursor:pointer;">&times;</span>
+    </div>
+    <iframe
+      id="chat-iframe"
+      src="https://cdn.botpress.cloud/webchat/v3.3/shareable.html?configUrl=https://files.bpcontent.cloud/2025/09/05/07/20250905073149-I99PXM74.json&clientId=abe605af-5da9-4952-86a9-b31bb360f547"
+      style="flex:1; border:none; border-bottom-left-radius:12px; border-bottom-right-radius:12px;">
+    </iframe>
+  </div>
+
+  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
+    // Sidebar toggle
     const sidebarToggle = document.getElementById('sidebarToggle');
     const sidebar = document.getElementById('sidebar');
-    sidebarToggle.addEventListener('click', function() {
-      if (sidebar.style.transform === 'translateX(0%)') {
-        sidebar.style.transform = 'translateX(-100%)';
-      } else {
-        sidebar.style.transform = 'translateX(0%)';
-      }
+    if (sidebarToggle && sidebar) {
+      sidebarToggle.addEventListener('click', function() {
+        sidebar.style.transform = (sidebar.style.transform === 'translateX(0%)') ? 'translateX(-100%)' : 'translateX(0%)';
+      });
+    }
+
+    // Chatbot toggle
+    const chatWindow = document.getElementById('chat-window');
+    const chatBtn = document.getElementById('chatbot-float-btn');
+    const chatClose = document.getElementById('close-chat');
+
+    chatBtn.addEventListener('click', () => {
+      chatWindow.style.display = chatWindow.style.display === 'flex' ? 'none' : 'flex';
+    });
+
+    chatClose.addEventListener('click', () => {
+      chatWindow.style.display = 'none';
     });
   </script>
-<button id="chatbot-float-btn" title="Chatbot">
-  <img src="{{ asset('img/bot2.gif') }}" alt="Chatbot" style="width: 80px; height: 80px; display: block;">
-</button>
-<style>
-  #chatbot-float-btn {
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-    z-index: 9999;
-    background: #fff;
-    border: none;
-    border-radius: 50%;
-    width: 90px;
-    height: 90px;
-    box-shadow:
-      0 4px 16px rgba(0,0,0,0.18),
-      0 2px 8px rgba(255,140,0,0.18),
-      0 0 0 4px rgba(255,255,255,0.15),
-      0 8px 24px 0 rgba(255,140,0,0.12);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: box-shadow 0.2s, background 0.2s, transform 0.2s;
-    transform: perspective(120px) scale3d(1,1,1) rotateX(8deg) rotateY(-8deg);
-  }
-  #chatbot-float-btn:hover {
-    box-shadow:
-      0 8px 32px rgba(255,140,0,0.25),
-      0 4px 16px rgba(255,140,0,0.18),
-      0 0 0 6px rgba(255,255,255,0.18);
-    background: #fffbe6;
-    color: #ff9800;
-    transform: perspective(120px) scale3d(1.08,1.08,1.08) rotateX(0deg) rotateY(0deg);
-  }
-  #chatbot-float-btn:hover {
-    box-shadow:
-      0 8px 32px rgba(255,140,0,0.25),
-      0 4px 16px rgba(255,140,0,0.18),
-      0 0 0 6px rgba(255,255,255,0.18);
-    background: linear-gradient(135deg, #ff9800 60%, #fffbe6 100%);
-    transform: perspective(120px) scale3d(1.08,1.08,1.08) rotateX(0deg) rotateY(0deg);
-  }
-  #chatbot-float-btn:hover {
-    box-shadow: 0 8px 24px rgba(255,140,0,0.25);
-    background: linear-gradient(135deg, #ff9800 60%, #fffbe6 100%);
-  }
-</style>
 </body>
-<style>
-  .animated-gradient-bg {
-    background: linear-gradient(120deg, #0a2540, #4f8cff, #0a2540);
-    background-size: 200% 200%;
-    animation: gradientMove 8s ease-in-out infinite;
-  }
-  @keyframes gradientMove {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-</style>
 </html>
