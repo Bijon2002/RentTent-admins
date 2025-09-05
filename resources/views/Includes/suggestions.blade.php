@@ -1,3 +1,15 @@
+<!-- Add AOS CSS and JS -->
+<link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    AOS.init({
+      duration: 600,
+      easing: 'ease-in-out',
+      once: true
+    });
+  });
+</script>
 
 
 <!-- Popup Modal -->
@@ -98,7 +110,7 @@ window.onclick = function(event) {
     
     <!-- Room Suggestions (12 cards) -->
     @for ($i = 1; $i <= 12; $i++)
-      <div class="col-xl-3 col-lg-4 col-md-6 d-flex align-items-stretch">
+  <div class="col-xl-3 col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="fade-up">
         <div class="card dark-neo-card square-card w-100 h-100" style="aspect-ratio: 1/1; min-width: 260px; min-height: 260px;">
           <div class="square-img-container">
             <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="Room Suggestion {{ $i }}">
@@ -126,7 +138,7 @@ window.onclick = function(event) {
 
     <!-- Food Vendor Suggestions (12 cards) -->
     @for ($i = 1; $i <= 12; $i++)
-      <div class="col-xl-3 col-lg-4 col-md-6 d-flex align-items-stretch">
+      <div class="col-xl-3 col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="fade-up">
         <div class="card dark-neo-card square-card food-vendor-card w-100 h-100" style="aspect-ratio: 1/1;">
           <div class="square-img-container">
             <img src="https://images.unsplash.com/photo-1559847844-5315695dadae?auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="Food Vendor {{ $i }}">

@@ -43,11 +43,11 @@
         <ul class="list-unstyled text-white">
           <li class="mb-3 d-flex align-items-start">
             <i class="fas fa-map-marker-alt text-light-blue mt-1 me-2"></i>
-            <span>123 Nature Valley, Mountain View, CA 94040</span>
+            <span>No 14, Dhubai kuruku santhu, Dhubai main road uh , Dhubai</span>
           </li>
           <li class="mb-3 d-flex align-items-start">
             <i class="fas fa-phone-alt text-light-blue mt-1 me-2"></i>
-            <span>+1 (555) 123-4567</span>
+            <span>+94 773155125</span>
           </li>
           <li class="mb-3 d-flex align-items-start">
             <i class="fas fa-envelope text-light-blue mt-1 me-2"></i>
@@ -90,7 +90,7 @@
 
 <style>
   .bg-dark-blue {
-    background-color: #0a1f3d;
+    background-color:rgb(10, 15, 41);
   }
   
   .bg-medium-blue {

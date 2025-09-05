@@ -28,3 +28,4 @@ Route::put('/profile/update', [ProfileController::class, 'update'])->name('profi
 Route::view('/properties', 'pages.properties')->name('properties');
 Route::view('/foodplans', 'pages.foodplans')->name('foodplans');
 Route::view('/about', 'pages.aboutup')->name('aboutup');
+
