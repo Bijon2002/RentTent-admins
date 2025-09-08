@@ -1,9 +1,9 @@
 <!-- resources/views/layouts/footer.blade.php -->
-<footer class="bg-dark-blue text-white pt-5 pb-4">
+<footer class="bg-dark-blue text-white pt-5 pb-4" data-aos="fade-up" data-aos-duration="900">
   <div class="container">
     <div class="row g-4">
       <!-- Logo + Description -->
-      <div class="col-lg-4">
+      <div class="col-lg-4" data-aos="fade-right" data-aos-delay="100">
         <div class="d-flex align-items-center mb-3">
           <img src="{{ asset('img/logo2.png') }}" alt="RentTent Logo" class="me-2" style="height:40px;" />
           <span class="text-white fw-bold fs-4" style="letter-spacing: 1px;">RentTent</span>
@@ -26,7 +26,7 @@
       </div>
 
       <!-- Quick Links -->
-      <div class="col-lg-2 col-md-4">
+      <div class="col-lg-2 col-md-4" data-aos="fade-up" data-aos-delay="200">
         <h5 class="text-white mb-4 fw-bold">Quick Links</h5>
         <ul class="list-unstyled">
           <li class="mb-2"><a href="{{ url('/') }}" class="text-white footer-link">Home</a></li>
@@ -38,7 +38,7 @@
       </div>
 
       <!-- Contact Info -->
-      <div class="col-lg-3 col-md-4">
+      <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="300">
         <h5 class="text-white mb-4 fw-bold">Contact Us</h5>
         <ul class="list-unstyled text-white">
           <li class="mb-3 d-flex align-items-start">
@@ -57,7 +57,7 @@
       </div>
 
       <!-- Newsletter -->
-      <div class="col-lg-3 col-md-4">
+      <div class="col-lg-3 col-md-4" data-aos="fade-left" data-aos-delay="400">
         <h5 class="text-white mb-4 fw-bold">Newsletter</h5>
         <p class="text-white-50 mb-3">Subscribe to get updates on new properties and special offers.</p>
         <form class="mb-3">
@@ -87,6 +87,29 @@
     </div>
   </div>
 </footer>
+<!-- AOS CSS & JS -->
+<link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    AOS.init({ once: true });
+    // Smooth scroll for footer links
+    document.querySelectorAll('.footer-link').forEach(link => {
+      link.addEventListener('click', function(e) {
+        if (this.getAttribute('href').startsWith('#')) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            window.scrollTo({
+              top: target.offsetTop - 80,
+              behavior: 'smooth'
+            });
+          }
+        }
+      });
+    });
+  });
+</script>
 
 <style>
   .bg-dark-blue {
@@ -198,23 +221,3 @@
     transform: translateY(-1px);
   }
 </style>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    // Smooth scroll for footer links
-    document.querySelectorAll('.footer-link').forEach(link => {
-      link.addEventListener('click', function(e) {
-        if (this.getAttribute('href').startsWith('#')) {
-          e.preventDefault();
-          const target = document.querySelector(this.getAttribute('href'));
-          if (target) {
-            window.scrollTo({
-              top: target.offsetTop - 80,
-              behavior: 'smooth'
-            });
-          }
-        }
-      });
-    });
-  });
-</script>
