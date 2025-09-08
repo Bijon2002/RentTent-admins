@@ -40,9 +40,24 @@ $role = isset($userSession['role']) ? $userSession['role'] : ($user->role ?? nul
     <div class="d-flex gap-2 align-items-center">
       @if($user)
         <div class="dropdown">
-          <a class="d-flex align-items-center" href="{{ route('profile') }}" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="{{ $profilePic }}" class="rounded-circle" style="width:40px; height:40px; object-fit:cover;">
+          <!-- Profile with Neon Circle -->
+          <a class="d-flex align-items-center position-relative" href="{{ route('profile') }}" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="padding: 5px;">
+              <!-- Neon Circle Background -->
+              <span style="
+                  position: absolute;
+                  top: 50%; left: 50%;
+                  transform: translate(-50%, -50%);
+                  width: 50px; height: 50px;
+                  border-radius: 50%;
+                  border: 2px solid #4da6ff;
+                  box-shadow: 0 0 8px #4da6ff, 0 0 16px rgba(77,166,255,0.3);
+                  z-index: 0;
+              "></span>
+
+              <!-- Profile Image -->
+              <img src="{{ $profilePic }}" class="rounded-circle" style="width:40px; height:40px; object-fit:cover; position: relative; z-index: 1;">
           </a>
+
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
             <li><a class="dropdown-item" href="{{ route('profile') }}">Profile</a></li>
             @if($role === 'provider')
@@ -65,8 +80,6 @@ $role = isset($userSession['role']) ? $userSession['role'] : ($user->role ?? nul
     </div>
   </div>
 </nav>
-
-
 
 <!-- Styles -->
 <style>

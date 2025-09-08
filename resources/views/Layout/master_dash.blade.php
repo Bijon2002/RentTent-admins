@@ -16,7 +16,7 @@
 
   <style>
     :root {
-      --sidebar-bg: #0a1929;
+      --sidebar-bg: rgba(10,25,41,0.7);
       --sidebar-hover: #102a43;
       --primary-accent: #3b82f6;
       --primary-accent-light: #60a5fa;
@@ -27,14 +27,14 @@
     }
 
     body { 
-      background-color: #f1f5f9; 
-      font-family: 'Inter', sans-serif;
-      color: var(--text-primary);
       margin: 0;
       padding: 0;
+      font-family: 'Inter', sans-serif;
+      color: var(--text-primary);
+      background: url('{{ asset('img/bacck.jpg') }}') no-repeat center center fixed;
+      background-size: cover;
     }
 
-    /* Fullscreen layout (no sidebar for profile page) */
     .main-content {
       margin: 0;
       width: 100vw;
@@ -44,20 +44,29 @@
       padding: 0;
     }
 
+    .glass-card {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+      border: 1px solid rgba(255,255,255,0.18);
+      padding: 2rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .glass-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+    }
+
     @media (max-width: 992px) {
       .sidebar { width: 80px; }
       .main-content { margin-left: 80px; width: calc(100% - 80px); }
     }
-
     @media (max-width: 768px) {
       .sidebar { width: 0; overflow: hidden; }
       .sidebar.active { width: 250px; }
       .main-content { margin-left: 0; width: 100%; }
-    }
-
-    .animated-gradient-bg {
-      background: url('{{ asset('img/bacck.jpg') }}') no-repeat center center fixed;
-      background-size: cover;
     }
 
     #chatbot-float-btn {
@@ -70,10 +79,10 @@
       border-radius: 30px;
       width: 60px;
       height: 60px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
       display: flex;
       align-items: center;
       justify-content: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
       cursor: pointer;
       transition: transform 0.18s cubic-bezier(0.4,0.2,0.2,1);
     }
@@ -81,35 +90,90 @@
       transform: translateY(-7px);
       box-shadow: 0 4px 12px rgba(0,0,0,0.25);
     }
+
+    #loader {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      backdrop-filter: blur(8px);
+      background: rgba(10,31,61,0.4);
+      display: flex; justify-content: center; align-items: center;
+      z-index: 99999;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+    }
+    .diamond { width: 120px; height: 120px; perspective: 1000px; }
+    .diamond-inner {
+      width: 100%; height: 100%; position: relative; transform-style: preserve-3d;
+      animation: flip-card 2s infinite linear;
+      border: 2px solid #4da6ff; border-radius: 12px; box-shadow: 0 0 20px rgba(77,166,255,0.6);
+      background: transparent;
+    }
+    .diamond-front, .diamond-back {
+      position: absolute; width: 100%; height: 100%;
+      display: flex; justify-content: center; align-items: center;
+      backface-visibility: hidden;
+    }
+    .diamond-back { transform: rotateY(180deg); }
+    .diamond-inner img { width: 70px; }
+    @keyframes flip-card {
+      0% { transform: rotateY(0deg); }
+      50% { transform: rotateY(180deg); }
+      100% { transform: rotateY(360deg); }
+    }
+    #loader.hidden { opacity: 0; visibility: hidden; }
+
   </style>
 </head>
 
-<body class="animated-gradient-bg">
+<body>
   {{-- Navbar --}}
   @include('Includes.navbar')
 
   <div class="container-fluid p-0" style="min-height:100vh;">
     <div class="row g-0" style="min-height:100vh;">
-      <div id="sidebar" class="sidebar d-flex flex-column justify-content-between p-3" style="width:5cm; background:rgba(10,25,41,0.7); min-height:100vh; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); position: fixed; left: 0; top: 0; height: 100vh; z-index: 10; transform: translateX(-100%); transition: transform 0.3s;">
-        <!-- Sidebar content -->
-        <div>
-          <div class="text-center mb-4" style="margin-top:3cm;">
-            <img src="{{ session('user.profile_pic') ? asset('storage/' . session('user.profile_pic')) : asset('img/default-user.png') }}" class="rounded-circle mb-2" style="width:80px; height:80px; object-fit:cover;">
-            <h5 class="fw-bold text-light">{{ session('user.name') ?? 'User' }}</h5>
-            <span class="badge bg-primary">{{ session('user.role') ? ucfirst(session('user.role')) : ($user ? ucfirst($user->role) : 'Guest') }}</span>
-          </div>
+      
+      <!-- Sidebar -->
+      <div id="sidebar" class="sidebar d-flex flex-column justify-content-between p-3"
+           style="width:5cm; background: var(--sidebar-bg); min-height:100vh; backdrop-filter: blur(8px); position: fixed; left:0; top:0; height:100vh; z-index:10; transform: translateX(-100%); transition: transform 0.3s;">
+        
+        <div style="margin-top:4cm;">
           <ul class="nav flex-column gap-2">
+            
+            <!-- Always show Profile -->
             <li class="nav-item">
-              <a href="{{ route('profile') }}" class="nav-link {{ request()->routeIs('profile') ? 'fw-bold text-warning' : 'text-light' }}">Profile</a>
+              <a href="{{ route('profile') }}" 
+                 class="nav-link {{ request()->routeIs('profile') ? 'fw-bold text-warning' : 'text-light' }}">
+                 Profile
+              </a>
             </li>
-            <li class="nav-item">
-              <a href="#" id="sidebarBoardingList" class="nav-link text-light">Boarding List</a>
-            </li>
-            <li class="nav-item">
-              <a href="#" id="sidebarSubscribedFoods" class="nav-link text-light">Subscribed Foods</a>
-            </li>
+
+            <!-- Finder -->
+            @if(auth()->check() && auth()->user()->role === 'finder')
+              <li class="nav-item">
+                <a href="#" id="sidebarBoardingList" class="nav-link text-light">Boarding List</a>
+              </li>
+              <li class="nav-item">
+                <a href="#" id="sidebarSubscribedFoods" class="nav-link text-light">Subscribed Foods</a>
+              </li>
+            @endif
+
+            <!-- Provider -->
+            @if(auth()->check() && auth()->user()->role === 'provider')
+              <li class="nav-item">
+                <a href="#" class="nav-link text-light">Manage Boarding</a>
+              </li>
+            @endif
+
+            <!-- Vendor -->
+            @if(auth()->check() && auth()->user()->role === 'vendor')
+              <li class="nav-item">
+                <a href="#" class="nav-link text-light">Manage Food Package</a>
+              </li>
+            @endif
+
           </ul>
         </div>
+
         <div>
           <form action="{{ route('logout') }}" method="POST">
             @csrf
@@ -118,7 +182,8 @@
         </div>
       </div>
 
-      <div class="col-lg-9 col-md-8 main-content d-flex align-items-center justify-content-center p-0" style="background:transparent; min-height:100vh; margin-left:0;">
+      <!-- Main Content -->
+      <div class="col-lg-9 col-md-8 main-content d-flex align-items-center justify-content-center p-4" style="margin-left:0;">
         @yield('content')
       </div>
     </div>
@@ -132,7 +197,7 @@
     <img src="{{ asset('img/bott.gif') }}" alt="Chatbot" style="width: 54px; height: 54px;">
   </button>
 
-  <!-- Chat Window with Botpress iframe -->
+  <!-- Chat Window -->
   <div id="chat-window" style="display:none; position:fixed; bottom:90px; right:24px; width:400px; height:500px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.2); background:#fff; z-index:9999; flex-direction:column;">
     <div id="chat-header" style="padding:10px; background:#0a2540; color:#fff; font-weight:bold; border-top-left-radius:12px; border-top-right-radius:12px;">
       RentTent Chat
@@ -145,19 +210,35 @@
     </iframe>
   </div>
 
+  <!-- Loader -->
+  <div id="loader">
+    <div class="diamond">
+      <div class="diamond-inner">
+        <div class="diamond-front">
+          <img src="{{ asset('img/logo2.png') }}" alt="Logo">
+        </div>
+        <div class="diamond-back">
+          <img src="{{ asset('img/logo2.png') }}" alt="Logo">
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    // Sidebar toggle
+    window.addEventListener("load", function() {
+      document.getElementById("loader").classList.add("hidden");
+    });
+
     const sidebarToggle = document.getElementById('sidebarToggle');
     const sidebar = document.getElementById('sidebar');
-    if (sidebarToggle && sidebar) {
-      sidebarToggle.addEventListener('click', function() {
+    if(sidebarToggle && sidebar){
+      sidebarToggle.addEventListener('click', () => {
         sidebar.style.transform = (sidebar.style.transform === 'translateX(0%)') ? 'translateX(-100%)' : 'translateX(0%)';
       });
     }
 
-    // Chatbot toggle
     const chatWindow = document.getElementById('chat-window');
     const chatBtn = document.getElementById('chatbot-float-btn');
     const chatClose = document.getElementById('close-chat');
@@ -166,9 +247,7 @@
       chatWindow.style.display = chatWindow.style.display === 'flex' ? 'none' : 'flex';
     });
 
-    chatClose.addEventListener('click', () => {
-      chatWindow.style.display = 'none';
-    });
+    chatClose.addEventListener('click', () => { chatWindow.style.display = 'none'; });
   </script>
 </body>
 </html>
