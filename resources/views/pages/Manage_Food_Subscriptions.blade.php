@@ -22,7 +22,7 @@
     </button>
 
     @if($foods->isEmpty())
-        <p class="text-muted">No packages yet. Start by adding one!</p>
+        <p class="text-muted">No packages yet, Start by adding one!</p>
     @else
         <div class="table-responsive">
             <table class="table table-hover text-center align-middle">
