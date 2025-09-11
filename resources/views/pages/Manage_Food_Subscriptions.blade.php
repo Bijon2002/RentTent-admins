@@ -18,7 +18,7 @@
     @endif
 
     <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addFoodModal">
-        <i class="bi bi-plus-circle"></i> Add New Package
+        <i class="bi bi-plus-circle"></i> Add New Packages
     </button>
 
     @if($foods->isEmpty())
