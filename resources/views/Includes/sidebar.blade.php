@@ -1,18 +1,20 @@
 <div class="fullscreen-slideshow w-100">
   <!-- Slides Container -->
   <div class="slides-container position-relative w-100 h-100" style="overflow: hidden;">
-    <!-- Slide 1 -->
-    <div class="slide position-absolute w-100 h-100" 
-         style="background: url('https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80') center/cover;">
-      <div class="content position-absolute slide-content slide-content-first">
-        <h2 class="text-white display-4 fw-bold mb-3 neon-text">Premium Camping</h2>
-        <p class="text-light-blue fs-3">Luxury tents with premium amenities</p>
-      </div>
-    </div>
+ <!-- Slide 1 -->
+<div class="slide position-absolute w-100 h-100" 
+     style="background: url('{{ asset('assets/images/home.jpeg') }}') center/cover;">
+  <div class="content position-absolute slide-content slide-content-first">
+    <h2 class="text-white display-4 fw-bold mb-3 neon-text">Premium Camping</h2>
+    <p class="text-light-blue fs-3">Luxury tents with premium amenities</p>
+  </div>
+</div>
+
+
 
     <!-- Slide 2 -->
     <div class="slide position-absolute w-100 h-100" 
-         style="background: url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80') center/cover;">
+           style="background: url('{{ asset('assets/images/fff.jpg') }}') center/cover;">
       <div class="content position-absolute slide-content slide-content-right">
         <h2 class="text-white display-4 fw-bold mb-3 neon-text">Gourmet Food</h2>
         <p class="text-light-blue fs-3">From top local vendors</p>
@@ -28,6 +30,15 @@
       </div>
     </div>
   </div>
+
+  <!-- Slide 2 -->
+    <div class="slide position-absolute w-100 h-100" 
+           style="background: url('{{ asset('assets/images/h.jpg') }}') center/cover;">
+      <div class="content position-absolute slide-content slide-content-right">
+        <h2 class="text-white display-4 fw-bold mb-3 neon-text">Health Services</h2>
+        <p class="text-light-blue fs-3">From local doctors</p>
+      </div>
+    </div>
 
   <!-- Permanent Tagline -->
   <div class="tagline-container position-absolute w-100 text-center" style="top: 40%; left: 50%; transform: translateX(-50%); z-index: 10;">
