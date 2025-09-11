@@ -167,7 +167,10 @@
             <!-- Vendor -->
             @if(auth()->check() && auth()->user()->role === 'vendor')
               <li class="nav-item">
-                <a href="#" class="nav-link text-light">Manage Food Package</a>
+                <a href="{{ route('vendor.foods') }}" 
+                   class="nav-link {{ request()->routeIs('vendor.foods') ? 'fw-bold text-warning' : 'text-light' }}">
+                   Manage Food Subscriptions
+                </a>
               </li>
             @endif
 

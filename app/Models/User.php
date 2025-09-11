@@ -11,9 +11,9 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $primaryKey = 'user_id'; // important!
-    public $incrementing = true;
-    protected $keyType = 'int';
+    protected $primaryKey = 'user_id'; // ✅ matches your DB
+    public $incrementing = true;       // if auto-increment
+    protected $keyType = 'int';        // integer type
 
     protected $fillable = [
         'name',
@@ -40,4 +40,17 @@ class User extends Authenticatable
             'password'          => 'hashed',
         ];
     }
+
+    // ===============================
+    // Vendor relation: one vendor has many food packages
+    // ===============================
+    public function foods() {
+        return $this->hasMany(\App\Models\FoodMenu::class, 'user_id', 'user_id');
+    }
+
+    public function subscriptions()
+{
+    return $this->hasMany(\App\Models\Subscription::class);
+}
+
 }
