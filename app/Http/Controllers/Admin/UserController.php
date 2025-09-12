@@ -5,92 +5,79 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
+use App\Models\User;
 
 class UserController extends Controller
 {
-    /**
-     * Display all users via API from the users project.
-     */
+    private $apiUrl = "http://127.0.0.1:8001/api"; // User project API for images
+    private $token  = "1|KM6z0xFl4T2pKGW2sELviH1pJcjUo891i5pQFlnD002a272e";
+
+    // List all users
     public function index()
     {
-        $token = "1|KM6z0xFl4T2pKGW2sELviH1pJcjUo891i5pQFlnD002a272e"; // Sanctum token from users project
+        $users = User::all(); // Direct DB for other data
+
+        // Fetch images from API
         $client = new Client();
-
         try {
-            $response = $client->get('http://127.0.0.1:8001/api/users', [
-                'headers' => [
-                    'Authorization' => 'Bearer ' . $token,
-                    'Accept' => 'application/json',
-                ]
+            $response = $client->get("{$this->apiUrl}/users", [
+                'headers' => $this->headers()
             ]);
-
-            $users = json_decode($response->getBody(), true);
-
-            // Fallback for missing images
-            foreach($users as &$user) {
-                $user['profile_pic_url'] = $user['profile_pic_url'] ?? 'https://via.placeholder.com/150';
-                $user['nic_image_url'] = $user['nic_image_url'] ?? 'https://via.placeholder.com/250x150';
+            $apiUsers = json_decode($response->getBody(), true);
+            
+            // Map images from API to DB users
+            foreach ($users as &$user) {
+                $apiUser = collect($apiUsers)->firstWhere('user_id', $user->user_id);
+                $user->profile_pic_url = $apiUser['profile_pic_url'] ?? asset('img/default-user.png');
+                $user->nic_image_url   = $apiUser['nic_image_url'] ?? asset('img/default-nic.png');
             }
 
         } catch (\Exception $e) {
-            $users = [];
-            session()->flash('error', 'Unable to fetch users from API: ' . $e->getMessage());
+            session()->flash('error', 'Unable to fetch images: ' . $e->getMessage());
+            foreach ($users as &$user) {
+                $user->profile_pic_url = asset('img/default-user.png');
+                $user->nic_image_url   = asset('img/default-nic.png');
+            }
         }
 
         return view('pages.users', compact('users'));
     }
 
-    /**
-     * Update a user's details via users project API.
-     */
-    public function update(Request $request, $user_id)
+    // Verify / Reject user (direct DB)
+    public function verify(Request $request, $user_id)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email',
-            'phone' => 'required|string|max:20',
-            'nic_number' => 'required|string|max:50',
-            'role' => 'required|in:finder,provider,vendor',
-            'location' => 'required|string|max:255',
-            'verification_status' => 'required|in:Pending,Verified,Manual Review,Rejected',
+            'verification_status' => 'required|in:Pending,Verified,Rejected'
         ]);
 
-        $token = "1|KM6z0xFl4T2pKGW2sELviH1pJcjUo891i5pQFlnD002a272e";
-        $client = new Client();
-        $client->patch("http://127.0.0.1:8001/api/user/{$user_id}", [
-            'headers' => [
-                'Authorization' => 'Bearer ' . $token,
-                'Accept' => 'application/json',
-            ],
-            'form_params' => $request->only([
-                'name', 'email', 'phone', 'nic_number', 'role', 'location', 'verification_status'
-            ])
-        ]);
+        $user = User::find($user_id);
+        if (!$user) return back()->with('error', 'User not found');
+
+        $user->verification_status = $request->verification_status;
+        $user->save();
 
         return redirect()->route('admin.users.index')
-                         ->with('success', 'User updated successfully via API');
+                         ->with('success', "User verification updated to {$request->verification_status}");
     }
 
-    /**
-     * Delete a user via users project API.
-     */
+    // Delete user (direct DB)
     public function destroy($user_id)
     {
-        $token = "1|KM6z0xFl4T2pKGW2sELviH1pJcjUo891i5pQFlnD002a272e";
-        $client = new Client();
+        $user = User::find($user_id);
+        if (!$user) return back()->with('error', 'User not found');
 
-        try {
-            $client->delete("http://127.0.0.1:8001/api/user/{$user_id}", [
-                'headers' => [
-                    'Authorization' => 'Bearer ' . $token,
-                    'Accept' => 'application/json',
-                ]
-            ]);
-        } catch (\Exception $e) {
-            session()->flash('error', 'Unable to delete user via API: ' . $e->getMessage());
-        }
+        $user->delete();
 
         return redirect()->route('admin.users.index')
-                         ->with('success', 'User deleted successfully via API');
+                         ->with('success', 'User deleted successfully');
+    }
+
+    // Common headers for API
+    private function headers(): array
+    {
+        return [
+            'Authorization' => 'Bearer ' . $this->token,
+            'Accept'        => 'application/json',
+        ];
     }
 }

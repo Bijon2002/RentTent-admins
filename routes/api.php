@@ -1,9 +1,7 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\UserImageController;
+use App\Http\Controllers\Api\UserController;
 
-Route::get('user-image/{user_id}/{type}', [UserImageController::class, 'show']);
-
-
-
+Route::get('/users', [UserController::class, 'index']);
+Route::patch('/user/{id}', [UserController::class, 'update']);
+Route::delete('/user/{id}', [UserController::class, 'destroy']);

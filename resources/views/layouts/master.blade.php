@@ -554,7 +554,31 @@
     </div>
   </div>
 
+  <!-- Floating Chatbot Button -->
+<button id="chatbot-float-btn" title="Chatbot" style="position:fixed; bottom:24px; right:24px; z-index:9999; background:#fff; border:none; border-radius:30px; width:60px; height:60px; box-shadow:0 2px 8px rgba(0,0,0,0.12); display:flex; align-items:center; justify-content:center; cursor:pointer;">
+  <img src="{{ asset('img/bott.gif') }}" alt="Chatbot" style="width:54px; height:54px;">
+</button>
+<!-- Chat Window (hidden by default) -->
+<div id="chat-window" style="display:none; position:fixed; bottom:90px; right:24px; width:400px; height:500px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.2); background:#fff; z-index:9999; flex-direction:column;">
+  <div style="padding:10px; background:#0a2540; color:#fff; font-weight:bold; border-top-left-radius:12px; border-top-right-radius:12px;">
+    RentTent Chat
+    <span id="close-chat" style="float:right; cursor:pointer;">&times;</span>
+  </div>
+  <iframe src="https://cdn.botpress.cloud/webchat/v3.3/shareable.html?configUrl=https://files.bpcontent.cloud/2025/09/05/07/20250905073149-I99PXM74.json&clientId=abe605af-5da9-4952-86a9-b31bb360f547" style="flex:1; border:none; border-bottom-left-radius:12px; border-bottom-right-radius:12px;"></iframe>
+</div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   @stack('scripts')
+  <script>
+// Chatbot toggle
+const chatWindow = document.getElementById('chat-window');
+const chatBtn = document.getElementById('chatbot-float-btn');
+const chatClose = document.getElementById('close-chat');
+chatBtn.addEventListener('click', () => {
+  chatWindow.style.display = chatWindow.style.display === 'flex' ? 'none' : 'flex';
+});
+chatClose.addEventListener('click', () => {
+  chatWindow.style.display = 'none';
+});
+</script>
 </body>
 </html>
