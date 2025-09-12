@@ -160,7 +160,7 @@
             <!-- Provider -->
             @if(auth()->check() && auth()->user()->role === 'provider')
               <li class="nav-item">
-                <a href="#" class="nav-link text-light">Manage Boarding</a>
+                <a href="#" class="nav-link text-light">Manage Boardings</a>
               </li>
             @endif
 
