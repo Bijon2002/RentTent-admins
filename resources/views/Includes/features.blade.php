@@ -14,7 +14,7 @@
 <!-- What is RentTent -->
 <section class="renttent-section text-center py-5">
   <div class="container">
-    <h2 class="section-title">What is RentTent?</h2>
+    <h2 class="section-title">What is RentTent..?</h2>
     <p class="section-desc">
       RentTent is a premium boarding rental platform that connects room seekers with verified hosts and local food vendors, 
       creating a complete living ecosystem for modern professionals and students.
