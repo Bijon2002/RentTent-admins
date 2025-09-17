@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use App\Models\User;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\VerificationStatusMail;
+
 
 class UserController extends Controller
 {
@@ -45,20 +48,27 @@ class UserController extends Controller
 
     // Verify / Reject user (direct DB)
     public function verify(Request $request, $user_id)
-    {
-        $request->validate([
-            'verification_status' => 'required|in:Pending,Verified,Rejected'
-        ]);
+{
+    $request->validate([
+        'verification_status' => 'required|in:Pending,Verified,Rejected'
+    ]);
 
-        $user = User::find($user_id);
-        if (!$user) return back()->with('error', 'User not found');
+    $user = User::find($user_id);
+    if (!$user) return back()->with('error', 'User not found');
 
-        $user->verification_status = $request->verification_status;
-        $user->save();
+    $user->verification_status = $request->verification_status;
+    $user->save();
 
-        return redirect()->route('admin.users.index')
-                         ->with('success', "User verification updated to {$request->verification_status}");
+    // Send mail if Rejected
+    if ($request->verification_status == 'Rejected') {
+        Mail::to($user->email)->send(
+            new VerificationStatusMail('Rejected', 'Unclear image provided')
+        );
     }
+
+    return redirect()->route('admin.users.index')
+                     ->with('success', "User verification updated to {$request->verification_status}");
+}
 
     // Delete user (direct DB)
     public function destroy($user_id)
