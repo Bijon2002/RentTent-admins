@@ -157,12 +157,14 @@
               </li>
             @endif
 
-            <!-- Provider -->
-            @if(auth()->check() && auth()->user()->role === 'provider')
-              <li class="nav-item">
-                <a href="#" class="nav-link text-light">Manage Boarding</a>
-              </li>
-            @endif
+        
+  <!-- Provider -->
+@if(auth()->check() && auth()->user()->role === 'provider')
+  <li class="nav-item">
+    <a href="{{ route('provider.boardings.index') }}" class="nav-link text-light">Manage Boarding</a>
+  </li>
+@endif
+
 
             <!-- Vendor -->
             @if(auth()->check() && auth()->user()->role === 'vendor')

@@ -52,3 +52,29 @@ use App\Http\Controllers\SubscriptionController;
 Route::post('/vendor/{menu}/subscribe', [SubscriptionController::class, 'subscribe'])
     ->name('subscribe.vendor')
     ->middleware('auth');
+
+
+use App\Http\Controllers\SuggestionController;
+
+Route::get('/suggestions', [SuggestionController::class, 'index'])->name('suggestions');
+
+use App\Http\Controllers\BoardingController;
+
+Route::middleware(['auth'])->group(function () {
+  Route::get('/provider/boardings', [BoardingController::class, 'index'])->name('provider.boardings.index');
+    Route::post('/provider/boardings', [BoardingController::class, 'store'])->name('provider.boardings.store');
+    Route::delete('/provider/boardings/{id}', [BoardingController::class, 'destroy'])->name('provider.boardings.destroy');
+    Route::get('/provider/boardings/{id}/edit', [BoardingController::class, 'edit'])->name('provider.boardings.edit');
+    Route::put('/provider/boardings/{id}', [BoardingController::class, 'update'])->name('provider.boardings.update');
+    Route::delete('provider/boardings/photo/{id}', [BoardingController::class, 'deletePhoto'])->name('provider.boardings.photo.delete');
+});
+Route::get('/properties', [BoardingController::class, 'approvedBoardings'])->name('properties');
+
+
+Route::get('/boarding/{id}', [BoardingController::class, 'show'])
+    ->name('boarding.details');
+
+    Route::middleware('auth')->group(function() {
+    Route::post('/boarding/{id}/reserve', [BookingController::class, 'reserve'])
+         ->name('booking.reserve');
+});

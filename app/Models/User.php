@@ -52,5 +52,10 @@ class User extends Authenticatable
 {
     return $this->hasMany(\App\Models\Subscription::class);
 }
+public function boardings()
+{
+    return $this->hasMany(Boarding::class, 'user_id', 'user_id');
+}
+
 
 }
