@@ -31,9 +31,8 @@
   <div class="container" style="margin-top:3cm;">
     <div class="card shadow-lg border-0 rounded-4 overflow-hidden" style="max-width: 1200px; width:100%;">
       <div class="row g-0">
-        
         <!-- Left Section (Form) -->
-    <div class="col-md-6 p-5 bg-transparent" style="height: 600px; overflow-y: auto; background: transparent;">
+        <div class="col-md-6 p-5 bg-transparent" style="height: 600px; overflow-y: auto; background: transparent;">
           <div class="text-center mb-4">
             <h2 class="fw-bold">Welcome Back</h2>
             <p class="text-muted">Sign in to your account</p>
