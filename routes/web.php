@@ -78,3 +78,16 @@ Route::get('/boarding/{id}', [BoardingController::class, 'show'])
     Route::post('/boarding/{id}/reserve', [BookingController::class, 'reserve'])
          ->name('booking.reserve');
 });
+
+Route::get('/boarding/{boarding}/book-now', [BookingController::class, 'bookNow'])
+    ->name('booking.booknow');
+
+    
+Route::get('/boardings/search', [BoardingController::class, 'search'])->name('boarding.search');
+Route::get('/boardings', [BoardingController::class, 'index'])->name('boarding.index');
+
+
+use App\Http\Controllers\BookingController;
+
+Route::post('/booking/reserve/{boarding}', [BookingController::class, 'reserve'])->name('booking.reserve');
+Route::get('/booking/booknow/{boarding}', [BookingController::class, 'bookNow'])->name('booking.booknow');

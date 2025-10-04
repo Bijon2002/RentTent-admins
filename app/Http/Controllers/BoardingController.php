@@ -209,5 +209,30 @@ public function approvedBoardings()
         'provider' => $boarding->user, // provider details
     ]);
 }
+public function bookNow($boardingId)
+{
+    $boarding = Boarding::findOrFail($boardingId);
+
+    // 40% of the first rent increases trust score
+    $trustIncrease = $boarding->monthly_rent * 0.4;
+    $boarding->trust_score += $trustIncrease;
+    $boarding->save();
+
+    // Redirect or show confirmation
+    return redirect()->route('boarding.details', $boarding->boarding_id)
+                     ->with('success', 'Booking confirmed! Trust score increased.');
+}
+
+public function search(Request $request)
+{
+    $query = $request->input('q');
+
+    $boardings = Boarding::where('title', 'like', "%$query%")
+                ->orWhere('location', 'like', "%$query%")
+                ->get();
+
+    return view('boardings.index', compact('boardings'));
+}
+
 
 }
