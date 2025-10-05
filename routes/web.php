@@ -1,6 +1,7 @@
 <?php
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\AdminFoodController;
 use App\Http\Controllers\Admin\LoginController;
 
 Route::get('/', function () {
@@ -31,5 +32,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('users', [UserController::class, 'index'])->name('users.index');
     Route::delete('users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
     Route::post('users/{user}/verify', [UserController::class, 'verify'])->name('users.verify');
+
+    // Vendors (dynamic, using controller)
+    Route::get('vendors', [AdminFoodController::class, 'index'])->name('vendors');
+    Route::post('vendors/{id}/approve', [AdminFoodController::class, 'approve'])->name('vendors.approve');
+    Route::delete('vendors/{id}', [AdminFoodController::class, 'destroy'])->name('vendors.destroy');
+
 });
 
