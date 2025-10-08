@@ -3,7 +3,7 @@
   <div class="slides-container position-relative w-100 h-100" style="overflow: hidden;">
  <!-- Slide 1 -->
 <div class="slide position-absolute w-100 h-100" 
-     style="background: url('{{ asset('assets/images/home.jpeg') }}') center/cover;">
+     style="background: url('{{ asset('assets/images/home1.jpg') }}') center/cover;">
   <div class="content position-absolute slide-content slide-content-first">
     <h2 class="text-white display-4 fw-bold mb-3 neon-text">Premium Camping</h2>
     <p class="text-light-blue fs-3">Luxury tents with premium amenities</p>
@@ -14,7 +14,7 @@
 
     <!-- Slide 2 -->
     <div class="slide position-absolute w-100 h-100" 
-           style="background: url('{{ asset('assets/images/fff.jpg') }}') center/cover;">
+           style="background: url('{{ asset('assets/images/bf.jpg') }}') center/cover;">
       <div class="content position-absolute slide-content slide-content-right">
         <h2 class="text-white display-4 fw-bold mb-3 neon-text">Gourmet Food</h2>
         <p class="text-light-blue fs-3">From top local vendors</p>
@@ -23,7 +23,7 @@
 
     <!-- Slide 3 -->
     <div class="slide position-absolute w-100 h-100" 
-         style="background: url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80') center/cover;">
+          style="background: url('{{ asset('assets/images/home3.webp') }}') center/cover;">
       <div class="content position-absolute slide-content slide-content-center">
         <h2 class="text-white display-4 fw-bold mb-3 neon-text">24/7 Health Support</h2>
         <p class="text-light-blue fs-3">Medical chat assistance anytime</p>
@@ -33,7 +33,7 @@
 
   <!-- Slide 2 -->
     <div class="slide position-absolute w-100 h-100" 
-           style="background: url('{{ asset('assets/images/h.jpg') }}') center/cover;">
+           style="background: url('{{ asset('assets/images/foo.jpg') }}') center/cover;">
       <div class="content position-absolute slide-content slide-content-right">
         <h2 class="text-white display-4 fw-bold mb-3 neon-text">Health Services</h2>
         <p class="text-light-blue fs-3">From local doctors</p>
