@@ -664,7 +664,7 @@
                         </div>
                     </div>
                     <div class="team-info">
-                        <h4 class="compact-mb-1">Alex Chen</h4>
+                        <h4 class="compact-mb-1">Bijon</h4>
                         <p class="text-primary compact-mb-2">Lead Developer & Founder</p>
                         <p class="team-desc">Organizing spaces & building scalable backend systems. Obsessed with smooth bookings.</p>
                     </div>

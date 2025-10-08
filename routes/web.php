@@ -5,6 +5,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SignupController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FoodController;
+use App\Http\Controllers\BookingController;
 
 // ---------------- Home ----------------
 Route::get('/', fn() => view('welcome'))->name('home');
@@ -87,7 +88,13 @@ Route::get('/boardings/search', [BoardingController::class, 'search'])->name('bo
 Route::get('/boardings', [BoardingController::class, 'index'])->name('boarding.index');
 
 
-use App\Http\Controllers\BookingController;
+Route::middleware(['auth'])->group(function() {
+    Route::post('/booking/reserve/{boarding}', [BookingController::class, 'reserve'])->name('booking.reserve');
+    Route::post('/booking/book/{boarding}', [BookingController::class, 'book'])->name('booking.book');
+});
 
-Route::post('/booking/reserve/{boarding}', [BookingController::class, 'reserve'])->name('booking.reserve');
-Route::get('/booking/booknow/{boarding}', [BookingController::class, 'bookNow'])->name('booking.booknow');
+// Show all boarding bookings for logged-in user
+Route::get('/user/boardings', [UserController::class, 'myBoardings'])->name('user.boardings');
+
+// Show all subscribed food packages
+Route::get('/user/subscriptions', [UserController::class, 'mySubscriptions'])->name('user.subscriptions');

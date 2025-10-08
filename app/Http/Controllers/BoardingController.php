@@ -7,8 +7,6 @@ use App\Models\RoomPhoto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use App\Models\User;
-
 
 class BoardingController extends Controller
 {
@@ -20,17 +18,11 @@ class BoardingController extends Controller
     }
 
     // Show only approved boardings to public
-public function approvedBoardings()
-{
-    $boardings = Boarding::with('photos')
-        ->where('is_approved', true)   // only approved
-        ->get();
-
-    return view('pages.properties', compact('boardings'));
-}
-
-
-
+    public function approvedBoardings()
+    {
+        $boardings = Boarding::with('photos')->where('is_approved', true)->get();
+        return view('pages.properties', compact('boardings'));
+    }
 
     // Store new boarding
     public function store(Request $request)
@@ -41,24 +33,30 @@ public function approvedBoardings()
             'location' => 'required|string|max:255',
             'monthly_rent' => 'required|numeric',
             'advance_percent' => 'nullable|numeric',
-            'is_refundable' => 'nullable|boolean',
             'room_type' => 'required|string',
             'room_size' => 'nullable|integer',
             'is_food_included' => 'required|boolean',
             'gender_preference' => 'nullable|in:male,female,any',
-            'wifi' => 'nullable|boolean',
-            'parking' => 'nullable|boolean',
-            'laundry' => 'nullable|boolean',
-            'attached_bathroom' => 'nullable|boolean',
-            'furnished' => 'nullable|boolean',
             'property_doc_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'police_report_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'privacy_policy' => 'nullable|string',
             'posted_date' => 'required|date',
             'photos.*' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'wifi' => 'nullable|boolean',
+            'parking' => 'nullable|boolean',
+            'laundry' => 'nullable|boolean',
+            'attached_bathroom' => 'nullable|boolean',
+            'furnished' => 'nullable|boolean',
         ]);
 
-        // Handle file uploads
+        // Fix checkboxes (unchecked = 0)
+        $validated['wifi'] = $request->has('wifi') ? 1 : 0;
+        $validated['parking'] = $request->has('parking') ? 1 : 0;
+        $validated['laundry'] = $request->has('laundry') ? 1 : 0;
+        $validated['attached_bathroom'] = $request->has('attached_bathroom') ? 1 : 0;
+        $validated['furnished'] = $request->has('furnished') ? 1 : 0;
+
+        // File uploads
         if ($request->hasFile('property_doc_image')) {
             $validated['property_doc_image'] = $request->file('property_doc_image')->store('boardings/docs', 'public');
         }
@@ -66,7 +64,7 @@ public function approvedBoardings()
             $validated['police_report_image'] = $request->file('police_report_image')->store('boardings/docs', 'public');
         }
 
-        // Save Boarding
+        //dd($validated);
         $boarding = Boarding::create(array_merge($validated, [
             'user_id' => Auth::id(),
             'is_approved' => false,
@@ -98,27 +96,33 @@ public function approvedBoardings()
             'location' => 'required|string|max:255',
             'monthly_rent' => 'required|numeric',
             'advance_percent' => 'nullable|numeric',
-            'is_refundable' => 'nullable|boolean',
             'room_type' => 'required|in:single,shared,family',
             'room_size' => 'nullable|integer',
             'is_food_included' => 'required|boolean',
             'gender_preference' => 'nullable|in:male,female,any',
-            'wifi' => 'nullable|boolean',
-            'parking' => 'nullable|boolean',
-            'laundry' => 'nullable|boolean',
-            'attached_bathroom' => 'nullable|boolean',
-            'furnished' => 'nullable|boolean',
             'property_doc_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'police_report_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'privacy_policy' => 'nullable|string',
             'posted_date' => 'required|date',
             'photos.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'main_photo' => 'nullable|integer|exists:room_photos,photo_id',
+            'wifi' => 'nullable|boolean',
+            'parking' => 'nullable|boolean',
+            'laundry' => 'nullable|boolean',
+            'attached_bathroom' => 'nullable|boolean',
+            'furnished' => 'nullable|boolean',
         ]);
 
         $boarding = Boarding::where('user_id', Auth::id())->findOrFail($id);
 
-        // Handle new file uploads
+        // Fix checkboxes
+        $boarding->wifi = $request->has('wifi') ? 1 : 0;
+        $boarding->parking = $request->has('parking') ? 1 : 0;
+        $boarding->laundry = $request->has('laundry') ? 1 : 0;
+        $boarding->attached_bathroom = $request->has('attached_bathroom') ? 1 : 0;
+        $boarding->furnished = $request->has('furnished') ? 1 : 0;
+
+        // File uploads
         if ($request->hasFile('property_doc_image')) {
             Storage::disk('public')->delete($boarding->property_doc_image);
             $boarding->property_doc_image = $request->file('property_doc_image')->store('boardings/docs', 'public');
@@ -128,7 +132,6 @@ public function approvedBoardings()
             $boarding->police_report_image = $request->file('police_report_image')->store('boardings/docs', 'public');
         }
 
-        // Update Boarding info
         $boarding->update([
             'title' => $request->title,
             'description' => $request->description,
@@ -140,11 +143,6 @@ public function approvedBoardings()
             'room_size' => $request->room_size,
             'is_food_included' => $request->is_food_included,
             'gender_preference' => $request->gender_preference ?? $boarding->gender_preference,
-            'wifi' => $request->wifi ?? $boarding->wifi,
-            'parking' => $request->parking ?? $boarding->parking,
-            'laundry' => $request->laundry ?? $boarding->laundry,
-            'attached_bathroom' => $request->attached_bathroom ?? $boarding->attached_bathroom,
-            'furnished' => $request->furnished ?? $boarding->furnished,
             'property_doc_image' => $boarding->property_doc_image,
             'police_report_image' => $boarding->police_report_image,
             'privacy_policy' => $request->privacy_policy ?? $boarding->privacy_policy,
@@ -171,12 +169,11 @@ public function approvedBoardings()
         return redirect()->route('provider.boardings.index')->with('success', 'Boarding updated successfully!');
     }
 
-    // Delete a boarding
+    // Delete boarding
     public function destroy($id)
     {
         $boarding = Boarding::where('user_id', Auth::id())->findOrFail($id);
 
-        // Delete photos from storage
         foreach ($boarding->photos as $photo) {
             Storage::disk('public')->delete($photo->image_url);
             $photo->delete();
@@ -198,41 +195,32 @@ public function approvedBoardings()
         return back()->with('success', 'Photo deleted successfully!');
     }
 
-   public function show($id)
-{
-    // Fetch the boarding with its photos and provider
-    $boarding = Boarding::with(['photos', 'user'])->findOrFail($id);
+    public function show($id)
+    {
+        $boarding = Boarding::with(['photos', 'user'])->findOrFail($id);
+        return view('pages.provider-details', [
+            'boarding' => $boarding,
+            'provider' => $boarding->user,
+        ]);
+    }
 
-    // Return view
-    return view('pages.provider-details', [
-        'boarding' => $boarding,       // boarding details
-        'provider' => $boarding->user, // provider details
-    ]);
-}
-public function bookNow($boardingId)
-{
-    $boarding = Boarding::findOrFail($boardingId);
+    public function bookNow($boardingId)
+    {
+        $boarding = Boarding::findOrFail($boardingId);
+        $boarding->trust_score += $boarding->monthly_rent * 0.4;
+        $boarding->save();
 
-    // 40% of the first rent increases trust score
-    $trustIncrease = $boarding->monthly_rent * 0.4;
-    $boarding->trust_score += $trustIncrease;
-    $boarding->save();
+        return redirect()->route('boarding.details', $boarding->boarding_id)
+                         ->with('success', 'Booking confirmed! Trust score increased.');
+    }
 
-    // Redirect or show confirmation
-    return redirect()->route('boarding.details', $boarding->boarding_id)
-                     ->with('success', 'Booking confirmed! Trust score increased.');
-}
+    public function search(Request $request)
+    {
+        $query = $request->input('q');
+        $boardings = Boarding::where('title', 'like', "%$query%")
+                    ->orWhere('location', 'like', "%$query%")
+                    ->get();
 
-public function search(Request $request)
-{
-    $query = $request->input('q');
-
-    $boardings = Boarding::where('title', 'like', "%$query%")
-                ->orWhere('location', 'like', "%$query%")
-                ->get();
-
-    return view('boardings.index', compact('boardings'));
-}
-
-
+        return view('boardings.index', compact('boardings'));
+    }
 }

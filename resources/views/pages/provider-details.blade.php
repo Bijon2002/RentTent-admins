@@ -199,7 +199,7 @@ body { font-family: 'Poppins', sans-serif; background:#f5f5f5; }
 <div class="modal fade" id="paymentModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content modal-content-premium">
-            <form action="{{ route('booking.reserve', $boarding->boarding_id) }}" method="POST">
+            <form method="POST">
                 @csrf
                 <div class="row g-0">
                     <div class="col-lg-5 modal-info-side d-flex flex-column justify-content-center align-items-center">
@@ -237,12 +237,12 @@ body { font-family: 'Poppins', sans-serif; background:#f5f5f5; }
                             <span>Rs. {{ number_format($boarding->monthly_rent * 0.1,2) }}</span>
                         </div>
                         <div class="d-flex justify-content-between">
-                            <button type="submit" class="btn-purchase">
+                            <button type="button" class="btn-purchase" data-type="reserve">
                                 <i class="fas fa-lock"></i> Pay Now
                             </button>
-                            <a href="{{ route('booking.booknow', $boarding->boarding_id) }}" class="btn-book">
+                            <button type="button" class="btn-book" data-type="book">
                                 <i class="fas fa-calendar-check"></i> Book Now
-                            </a>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -253,6 +253,7 @@ body { font-family: 'Poppins', sans-serif; background:#f5f5f5; }
 
 @push('scripts')
 <script>
+// Card Type Detector
 document.querySelector('input[name="card_number"]').addEventListener('input', function() {
     const val = this.value.replace(/\s+/g, '');
     const label = document.getElementById('cardTypeLabel');
@@ -262,6 +263,35 @@ document.querySelector('input[name="card_number"]').addEventListener('input', fu
     else if(/^3[47]/.test(val)) type='American Express';
     else if(/^6/.test(val)) type='Discover';
     label.textContent = 'Card Type: ' + type;
+});
+
+// Modal Buttons Confirmation & Dynamic Form Submit
+document.querySelectorAll('.btn-purchase, .btn-book').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const type = this.dataset.type;
+        const msg = type === 'reserve' ? 
+            'Would you like to reserve this boarding?' : 
+            'Would you like to book this boarding?';
+
+        if(confirm(msg)) {
+            const form = this.closest('form');
+            form.action = type === 'reserve' 
+                ? '/booking/reserve/{{ $boarding->boarding_id }}' 
+                : '/booking/book/{{ $boarding->boarding_id }}';
+
+            let confInput = form.querySelector('input[name="confirmed"]');
+            if(!confInput){
+                confInput = document.createElement('input');
+                confInput.type = 'hidden';
+                confInput.name = 'confirmed';
+                confInput.value = 1;
+                form.appendChild(confInput);
+            } else {
+                confInput.value = 1;
+            }
+            form.submit();
+        }
+    });
 });
 </script>
 @endpush
