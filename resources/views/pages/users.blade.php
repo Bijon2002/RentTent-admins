@@ -81,10 +81,10 @@
 <!-- Verification Modals -->
 @foreach($users as $user)
 <div class="modal fade" id="verifyModal{{ $user['user_id'] }}" tabindex="-1" aria-labelledby="verifyModalLabel{{ $user['user_id'] }}" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" style="max-width:700px; min-height:340px; right:1cm;left:2.5cm; position:relative; top:3cm;">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable custom-modal-dialog">
     <div class="modal-content">
       <div class="modal-header d-flex justify-content-between align-items-center">
-        <div class="modal-title mb-0" style="width:100%; text-align:center;">
+        <div class="modal-title mb-0 w-100 text-center">
           <div style="font-size:1.3rem; font-weight:700; color:var(--primary-light);">Manual Verification</div>
           <div style="font-size:1.1rem; font-weight:500; color:var(--text); margin-top:0.2rem;">{{ $user['name'] }}</div>
         </div>
@@ -92,29 +92,31 @@
           <i class="bi bi-x-lg"></i>
         </button>
       </div>
+
       <div class="modal-body">
         <div class="verification-content">
+
           <!-- NIC and Profile Images -->
-          <div class="compare-images-section d-flex flex-row justify-content-center align-items-center gap-3">
-            <div class="document-section text-center" style="flex:1;">
-              <h4>NIC Document</h4>
-              <div class="document-image">
-                <img src="{{ $user['nic_image_url'] ?? 'https://via.placeholder.com/500x400?text=No+NIC+Image' }}" alt="NIC Image" style="max-width:180px; height:auto;">
-              </div>
+            <div class="compare-images-section d-flex justify-content-between align-items-start gap-3 flex-wrap">
+            <div class="document-section text-center flex-1">
+                <h4>NIC Document</h4>
+                <div class="document-image">
+                <img src="{{ $user['nic_image_url'] ?? 'https://via.placeholder.com/250x200?text=No+NIC+Image' }}" alt="NIC Image" class="zoomable-img">
+                </div>
             </div>
-            <div class="document-section text-center" style="flex:1;">
-              <h4>Profile Picture</h4>
-              <div class="document-image">
-                <img src="{{ $user['profile_pic_url'] ?? 'https://via.placeholder.com/500x400?text=No+Profile' }}" alt="Profile Picture" style="max-width:180px; height:auto;">
-              </div>
+            <div class="document-section text-center flex-1">
+                <h4>Profile Picture</h4>
+                <div class="document-image">
+                <img src="{{ $user['profile_pic_url'] ?? 'https://via.placeholder.com/250x200?text=No+Profile' }}" alt="Profile Picture" class="zoomable-img">
+                </div>
             </div>
-          </div>
+            </div>
 
           <!-- User Details -->
           <div class="user-details-section">
             <h4>User Details</h4>
             <div class="user-profile">
-              <div class="profile-details" style="width:100%;">
+              <div class="profile-details w-100">
                 <div class="detail-row"><span class="detail-label">Name:</span> <span class="detail-value">{{ $user['name'] }}</span></div>
                 <div class="detail-row"><span class="detail-label">Email:</span> <span class="detail-value">{{ $user['email'] }}</span></div>
                 <div class="detail-row"><span class="detail-label">Phone:</span> <span class="detail-value">{{ $user['phone'] }}</span></div>
@@ -136,6 +138,7 @@
           </div>
         </div>
       </div>
+
       <div class="modal-footer">
         <form action="{{ route('admin.users.verify', $user['user_id']) }}" method="POST" style="display:inline;">
           @csrf
@@ -159,49 +162,73 @@
 @endforeach
 
 <style>
-  /* --- Keep all your previous styles intact --- */
-  .user-management-section { background: var(--card-bg); border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.3); border:1px solid rgba(74,107,255,0.1); position:relative; }
-  .section-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; flex-wrap:wrap; gap:1rem; }
-  .search-container { position:relative; display:flex; align-items:center; }
-  .search-input { background:rgba(30,30,30,0.5); border:1px solid var(--border); border-radius:0.5rem; padding:0.75rem 1rem 0.75rem 2.5rem; width:250px; color:var(--text); }
-  .search-container i { position:absolute; left:1rem; color:var(--text-light); }
-  .table-responsive { overflow-x:auto; border-radius:0.5rem; }
-  .user-table { width:100%; border-collapse:collapse; }
-  .user-table th { background: rgba(74,107,255,0.1); padding:1rem; text-align:left; font-weight:600; color:var(--text); border-bottom:1px solid var(--border); }
-  .user-table td { padding:1rem; border-bottom:1px solid var(--border); }
-  .role-badge { background:rgba(74,107,255,0.1); color:var(--primary-light); padding:0.35rem 0.75rem; border-radius:1rem; font-size:0.8rem; font-weight:500; }
-  .verification-status { display:inline-flex; align-items:center; gap:0.5rem; padding:0.35rem 0.75rem; border-radius:1rem; font-size:0.8rem; font-weight:500; }
-  .verification-status.verified { background: rgba(0,230,118,0.1); color:#00e676; }
-  .verification-status.pending { background: rgba(255,193,7,0.1); color:#ffc107; }
-  .action-buttons { display:flex; gap:0.75rem; }
-  .btn-verify, .btn-delete { padding:0.5rem 0.75rem; border-radius:0.5rem; font-size:0.8rem; font-weight:500; display:inline-flex; align-items:center; gap:0.35rem; border:none; cursor:pointer; transition:all 0.3s; }
-  .btn-verify { background:rgba(74,107,255,0.1); color:var(--primary-light); border:1px solid var(--primary); }
-  .btn-verify:hover { background:var(--primary); color:white; box-shadow:0 0 10px rgba(74,107,255,0.5); }
-  .btn-delete { background: rgba(244,67,54,0.1); color:#f44336; border:1px solid rgba(244,67,54,0.3); }
-  .btn-delete:hover { background:#f44336; color:white; box-shadow:0 0 10px rgba(244,67,54,0.3); }
-  .modal-content { background: var(--card-bg); border-radius:0.75rem; border:1px solid var(--primary); box-shadow:0 0 30px rgba(0,242,255,0.3); }
-  @media (max-width:968px) { .modal-dialog { max-width:95vw !important; min-height:220px !important; left:0.5cm !important; right:0.5cm !important; top:1.2cm !important; } .modal-content { border-radius:0.5rem; padding:0.5rem; } }
-  .modal-header { border-bottom:1px solid var(--border); padding:0.7rem 1.2rem; display:flex; justify-content:space-between; align-items:center; min-height:60px; }
-  .modal-title { color:var(--primary-light); font-weight:600; font-size:1.25rem; }
-  .close-modal { background:none; border:none; color:var(--text-light); font-size:1.25rem; cursor:pointer; }
-  .close-modal:hover { color:white; }
-  .modal-body { padding:0.7rem; min-height:220px; }
-  .verification-content { display:grid; grid-template-columns:1fr; gap:1.2rem; }
-  .compare-images-section { display:flex; justify-content:center; gap:1.5rem; flex-wrap:wrap; }
-  .document-image img { width:100%; max-width:300px; height:auto; border-radius:12px; border:2px solid var(--primary); }
-  .user-profile { display:flex; gap:1rem; align-items:flex-start; flex-wrap:wrap; }
-  .profile-image img { width:80px; height:80px; border-radius:50%; object-fit:cover; border:2px solid var(--primary); }
-  .profile-details { flex-grow:1; }
-  .detail-row { display:flex; justify-content:space-between; padding:0.5rem 0; border-bottom:1px solid rgba(255,255,255,0.05); }
-  .detail-row:last-child { border-bottom:none; }
-  .detail-label { color:var(--text-light); font-weight:500; }
-  .detail-value { color:var(--text); }
-  .modal-footer { border-top:1px solid var(--border); padding:1rem 1.5rem; display:flex; justify-content:flex-end; gap:1rem; }
-  @media (max-width:968px) { .verification-content { grid-template-columns:1fr; } .compare-images-section { flex-direction:column; align-items:center; } .user-profile { flex-direction:column; align-items:center; text-align:center; } }
+.user-management-section { background: var(--card-bg); border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.3); border:1px solid rgba(74,107,255,0.1); }
+.section-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; flex-wrap:wrap; gap:1rem; }
+.search-container { position:relative; display:flex; align-items:center; }
+.search-input { background:rgba(30,30,30,0.5); border:1px solid var(--border); border-radius:0.5rem; padding:0.75rem 1rem 0.75rem 2.5rem; width:250px; color:var(--text); }
+.search-container i { position:absolute; left:1rem; color:var(--text-light); }
+.table-responsive { overflow-x:auto; border-radius:0.5rem; }
+.user-table { width:100%; border-collapse:collapse; }
+.user-table th { background: rgba(74,107,255,0.1); padding:1rem; text-align:left; font-weight:600; color:var(--text); border-bottom:1px solid var(--border); }
+.user-table td { padding:1rem; border-bottom:1px solid var(--border); }
+.role-badge { background:rgba(74,107,255,0.1); color:var(--primary-light); padding:0.35rem 0.75rem; border-radius:1rem; font-size:0.8rem; font-weight:500; }
+.verification-status { display:inline-flex; align-items:center; gap:0.5rem; padding:0.35rem 0.75rem; border-radius:1rem; font-size:0.8rem; font-weight:500; }
+.verification-status.verified { background: rgba(0,230,118,0.1); color:#00e676; }
+.verification-status.pending { background: rgba(255,193,7,0.1); color:#ffc107; }
+.action-buttons { display:flex; gap:0.75rem; }
+.btn-verify, .btn-delete { padding:0.5rem 0.75rem; border-radius:0.5rem; font-size:0.8rem; font-weight:500; display:inline-flex; align-items:center; gap:0.35rem; border:none; cursor:pointer; transition:all 0.3s; }
+.btn-verify { background:rgba(74,107,255,0.1); color:var(--primary-light); border:1px solid var(--primary); }
+.btn-verify:hover { background:var(--primary); color:white; box-shadow:0 0 10px rgba(74,107,255,0.5); }
+.btn-delete { background: rgba(244,67,54,0.1); color:#f44336; border:1px solid rgba(244,67,54,0.3); }
+.btn-delete:hover { background:#f44336; color:white; box-shadow:0 0 10px rgba(244,67,54,0.3); }
+
+/* MODAL FIX */
+.custom-modal-dialog { max-width:700px; width:90%; margin:0 auto; }
+@media (max-width:992px){ .custom-modal-dialog { max-width:95%; } }
+
+.modal-content { background: var(--card-bg); border-radius:0.75rem; border:1px solid var(--primary); box-shadow:0 0 30px rgba(0,242,255,0.3); max-height:90vh; overflow:hidden; }
+.modal-body { overflow-y:auto; max-height:70vh; padding-right:1rem; }
+.modal-body::-webkit-scrollbar { width:6px; }
+.modal-body::-webkit-scrollbar-thumb { background: var(--primary-light); border-radius:6px; }
+.modal-body::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
+
+.document-image img { width:100%; max-width:250px; height:auto; border-radius:12px; border:2px solid var(--primary); transition: transform 0.3s ease; cursor:pointer; }
+.document-image img:hover { transform:scale(1.05); }
+
+.detail-row { display:flex; justify-content:space-between; padding:0.5rem 0; border-bottom:1px solid rgba(255,255,255,0.05); }
+.detail-label { color:var(--text-light); font-weight:500; }
+.detail-value { color:var(--text); }
+.modal-footer { border-top:1px solid var(--border); padding:1rem 1.5rem; display:flex; justify-content:flex-end; gap:1rem; }
+
+.compare-images-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.document-section {
+  flex: 1;
+  min-width: 250px; /* ensures they stay side by side on larger screens but wrap on small screens */
+  text-align: center;
+}
+
+.document-image img {
+  width: 100%;
+  max-width: 250px;
+  height: auto;
+  border-radius: 12px;
+  border: 2px solid var(--primary);
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
 </style>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+  // Center modal correctly
   document.querySelectorAll('.modal').forEach(function(modal) {
     modal.addEventListener('show.bs.modal', function() {
       const modalDialog = this.querySelector('.modal-dialog');
