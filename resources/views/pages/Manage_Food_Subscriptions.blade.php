@@ -5,6 +5,7 @@
 @section('content')
 <div class="glass-card w-100 p-4 position-relative">
 
+    <!-- Sidebar Toggle -->
     <button id="sidebarToggle" class="btn position-absolute" style="top:1rem; right:1rem; z-index:3000; background:transparent; border:none;">
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="black" class="bi bi-list" viewBox="0 0 16 16">
             <path fill-rule="evenodd" d="M2.5 12.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1h-10a.5.5 0 0 1-.5-.5zm0-5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1h-10a.5.5 0 0 1-.5-.5zm0-5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1h-10a.5.5 0 0 1-.5-.5z"/>
@@ -17,12 +18,13 @@
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
+    <!-- Add Package Button -->
     <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addFoodModal">
         <i class="bi bi-plus-circle"></i> Add New Packages
     </button>
 
     @if($foods->isEmpty())
-        <p class="text-muted">No packages yet, Start by adding one!</p>
+        <p class="text-muted">No packages yet. Start by adding one!</p>
     @else
         <div class="table-responsive">
             <table class="table table-hover text-center align-middle">
@@ -59,9 +61,12 @@
                                 @endif
                             </td>
                             <td>
+                                <!-- Edit Button -->
                                 <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editFoodModal{{ $food->menu_id }}">
                                     <i class="bi bi-pencil"></i>
                                 </button>
+
+                                <!-- Delete Button -->
                                 <form action="{{ route('vendor.foods.destroy', $food->menu_id) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
@@ -120,6 +125,75 @@
     </form>
   </div>
 </div>
+
+<!-- Edit Package Modals -->
+@foreach($foods as $food)
+<div class="modal fade" id="editFoodModal{{ $food->menu_id }}" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <form action="{{ route('vendor.foods.update', $food->menu_id) }}" method="POST" enctype="multipart/form-data">
+      @csrf
+      @method('PUT')
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Edit Food Package</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Package Name</label>
+              <input type="text" name="name" class="form-control" value="{{ $food->name }}" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Food Type</label>
+              <select name="food_type" class="form-select" required>
+                <option value="breakfast" {{ $food->food_type=='breakfast'?'selected':'' }}>Breakfast</option>
+                <option value="lunch" {{ $food->food_type=='lunch'?'selected':'' }}>Lunch</option>
+                <option value="dinner" {{ $food->food_type=='dinner'?'selected':'' }}>Dinner</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Preference</label>
+              <select name="preference" class="form-select" required>
+                <option value="veg" {{ $food->preference=='veg'?'selected':'' }}>Veg</option>
+                <option value="non_veg" {{ $food->preference=='non_veg'?'selected':'' }}>Non-Veg</option>
+                <option value="both" {{ $food->preference=='both'?'selected':'' }}>Both</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Monthly Fee</label>
+              <input type="number" step="0.01" name="monthly_fee" class="form-control" value="{{ $food->monthly_fee }}" required>
+            </div>
+            <div class="col-md-12">
+              <label class="form-label">Description</label>
+              <textarea name="description" class="form-control" rows="3">{{ $food->description }}</textarea>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Start Date</label>
+              <input type="date" name="start_date" class="form-control" value="{{ $food->start_date }}" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">End Date</label>
+              <input type="date" name="end_date" class="form-control" value="{{ $food->end_date }}" required>
+            </div>
+            <div class="col-md-12">
+              <label class="form-label">Image</label>
+              <input type="file" name="image" class="form-control">
+              @if($food->image_url)
+                <img src="{{ asset('storage/'.$food->image_url) }}" class="rounded mt-2" width="100">
+              @endif
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Update Package</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+@endforeach
 
 <style>
 .food-img { width:100px; height:100px; object-fit:cover; border-radius:8px; transition: transform .2s;}

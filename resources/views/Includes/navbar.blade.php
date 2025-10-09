@@ -36,13 +36,19 @@ $role = isset($userSession['role']) ? $userSession['role'] : ($user->role ?? nul
       </ul>
     </div>
 
-    <!-- Right Buttons / Profile -->
+    <!-- Right Buttons / Profile + Language -->
     <div class="d-flex gap-2 align-items-center">
+      <!-- Language Selector -->
+      <select id="languageSelect" class="form-select form-select-sm">
+        <option value="en" selected>English</option>
+        <option value="ta">தமிழ்</option>
+        <option value="si">සිංහල</option>
+      </select>
+
       @if($user)
         <div class="dropdown">
           <!-- Profile with Neon Circle -->
           <a class="d-flex align-items-center position-relative" href="{{ route('profile') }}" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="padding: 5px;">
-              <!-- Neon Circle Background -->
               <span style="
                   position: absolute;
                   top: 50%; left: 50%;
@@ -54,7 +60,6 @@ $role = isset($userSession['role']) ? $userSession['role'] : ($user->role ?? nul
                   z-index: 0;
               "></span>
 
-              <!-- Profile Image -->
               <img src="{{ $profilePic }}" class="rounded-circle" style="width:40px; height:40px; object-fit:cover; position: relative; z-index: 1;">
           </a>
 
@@ -124,5 +129,13 @@ $role = isset($userSession['role']) ? $userSession['role'] : ($user->role ?? nul
   .dropdown-item:hover {
     background: rgba(77,166,255,0.15);
     color: #4da6ff;
+  }
+  #languageSelect {
+    background: rgba(0,5,15,0.6);
+    color: white;
+    border-radius: 8px;
+    border: 1px solid rgba(77,166,255,0.5);
+    padding: 0.2rem 0.5rem;
+    font-size: 0.85rem;
   }
 </style>

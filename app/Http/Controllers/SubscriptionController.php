@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\FoodMenu;
 use App\Models\Subscription;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class SubscriptionController extends Controller
@@ -37,10 +36,10 @@ class SubscriptionController extends Controller
             'expiry' => $request->expiry,
         ]);
 
-        // 3️⃣ Store subscription (correct foreign key!)
+        // 3️⃣ Store subscription
         $subscription = Subscription::create([
             'user_id' => Auth::id(),
-            'vendor_id' => $menu->menu_id, // ✅ point to menu_id
+            'vendor_id' => $menu->menu_id, 
             'amount' => $menu->monthly_fee,
             'status' => 'active',
             'payment_info' => $paymentInfo,
@@ -58,16 +57,10 @@ class SubscriptionController extends Controller
 
         $qr_image = QrCode::size(300)->generate($qr_data);
 
-        // 5️⃣ Send email with QR code
-        Mail::send([], [], function ($message) use ($qr_image) {
-            $message->to(Auth::user()->email)
-                ->subject('Subscription Successful!')
-                ->setBody('<h3>Thank you for subscribing!</h3><br>
-                           <p>Scan this QR for your subscription details:</p>
-                           <div>'.$qr_image.'</div>', 'text/html');
-        });
+        // 5️⃣ Flash success message (no email)
+        $request->session()->flash('success', 'Subscription successful! 🎉');
 
-        // 6️⃣ Return success view
+        // 6️⃣ Return subscription success view
         return view('pages.subscription-success', [
             'menu' => $menu,
             'qr_image' => $qr_image,
