@@ -523,7 +523,7 @@
                 <div class="mv-card mission-card p-3 bg-white">
                     <div class="d-flex align-items-center compact-mb-3">
                         <i class="fas fa-bullseye mv-icon"></i>
-                        <h3 class="mb-0 ms-3">Our Mission</h3>
+                        <h3 class="mb-0 ms-3">Our Missions</h3>
                     </div>
                     <p class="mb-0 compact-line-height">To provide students and workers with convenient and reliable access to safe, affordable boarding and quality food services. We strive to create a seamless experience that eliminates the stress of finding suitable accommodation and meals.</p>
                 </div>
