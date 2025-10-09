@@ -3,63 +3,37 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Boarding;
 use Illuminate\Http\Request;
 
 class BoardingListController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Display all properties
     public function index()
     {
-        //
+        // Fetch all boarding properties with related photos
+        $properties = Boarding::with('photos')->get();
+
+        // Pass to view
+        return view('pages.properties', compact('properties'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    // Approve property
+    public function approve($id)
     {
-        //
+        $property = Boarding::findOrFail($id);
+        $property->is_approved = true;
+        $property->save();
+
+        return redirect()->route('admin.properties')->with('success', 'Property approved successfully!');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    // Delete property
+    public function destroy($id)
     {
-        //
-    }
+        $property = Boarding::findOrFail($id);
+        $property->delete();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return redirect()->route('admin.properties')->with('success', 'Property deleted successfully!');
     }
 }
