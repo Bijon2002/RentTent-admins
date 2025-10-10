@@ -132,7 +132,7 @@ body { font-family: 'Poppins', sans-serif; background:#f5f5f5; }
     <!-- Boarding Details -->
     <div class="boarding-detail-card">
         <i class="fas fa-heart favorite-icon"></i>
-        <h2 class="details-section-title">Boarding Information</h2>
+        <h2 class="details-section-title">Boarding Informations</h2>
         <div class="details-columns">
             <!-- LEFT COLUMN -->
             <div class="detail-group">
