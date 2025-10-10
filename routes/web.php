@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AdminFoodController;
+use App\Http\Controllers\Admin\BoardingListController;
 use App\Http\Controllers\Admin\LoginController;
 
 Route::get('/', function () {
@@ -38,5 +39,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::post('vendors/{id}/approve', [AdminFoodController::class, 'approve'])->name('vendors.approve');
     Route::delete('vendors/{id}', [AdminFoodController::class, 'destroy'])->name('vendors.destroy');
 
+    //properties
+    Route::get('/properties', [BoardingListController::class, 'index'])->name('properties');
+    Route::post('/properties/approve/{id}', [BoardingListController::class, 'approve'])->name('properties.approve');
+    Route::delete('/properties/destroy/{id}', [BoardingListController::class, 'destroy'])->name('properties.destroy');
 });
 
