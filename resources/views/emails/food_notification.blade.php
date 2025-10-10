@@ -4,7 +4,7 @@
     <title>Food Package Notification</title>
 </head>
 <body>
-    <h2>🍽️ Food Package Update!</h2>
+    <h2>🍽️ Food Package Update...!</h2>
     <p><strong>Name:</strong> {{ $foodPackage->name }}</p>
     <p><strong>Type:</strong> {{ ucfirst($foodPackage->food_type) }}</p>
     <p><strong>Preference:</strong> {{ ucfirst($foodPackage->preference) }}</p>
