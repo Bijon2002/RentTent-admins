@@ -31,7 +31,7 @@
       padding: 0;
       font-family: 'Inter', sans-serif;
       color: var(--text-primary);
-      background: url('{{ asset('img/bacck.jpg') }}') no-repeat center center fixed;
+      background: url('{{ asset('img/m.png') }}') no-repeat center center fixed;
       background-size: cover;
     }
 
@@ -149,20 +149,23 @@
 
             <!-- Finder -->
             @if(auth()->check() && auth()->user()->role === 'finder')
-              <li class="nav-item">
-                <a href="#" id="sidebarBoardingList" class="nav-link text-light">Boarding List</a>
-              </li>
-              <li class="nav-item">
-                <a href="#" id="sidebarSubscribedFoods" class="nav-link text-light">Subscribed Foods</a>
-              </li>
+             <li class="nav-item">
+    <a href="{{ route('finder.booked.boardings') }}" class="nav-link text-light">Booked Boardings</a>
+</li>
+<li class="nav-item">
+    <a href="{{ route('finder.subscribed.foods') }}" class="nav-link text-light">Subscribed Foods</a>
+</li>
+
             @endif
 
-            <!-- Provider -->
-            @if(auth()->check() && auth()->user()->role === 'provider')
-              <li class="nav-item">
-                <a href="#" class="nav-link text-light">Manage Boarding</a>
-              </li>
-            @endif
+        
+  <!-- Provider -->
+@if(auth()->check() && auth()->user()->role === 'provider')
+  <li class="nav-item">
+    <a href="{{ route('provider.boardings.index') }}" class="nav-link text-light">Manage Boarding</a>
+  </li>
+@endif
+
 
             <!-- Vendor -->
             @if(auth()->check() && auth()->user()->role === 'vendor')
@@ -192,8 +195,7 @@
     </div>
   </div>
 
-  {{-- Footer --}}
-  @include('includes.footer')
+
 
   <!-- Floating Chatbot Button -->
   <button id="chatbot-float-btn" title="Chatbot">
@@ -252,5 +254,6 @@
 
     chatClose.addEventListener('click', () => { chatWindow.style.display = 'none'; });
   </script>
+     @stack('scripts')
 </body>
 </html>

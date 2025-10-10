@@ -56,6 +56,14 @@
             </div>
 
             <div class="mb-3">
+              <div class="alert alert-info" style="background: #fff8dc; color: #333; border: 1px solid #ffd700;">
+                <strong>Role Information:</strong><br>
+                <ul style="margin-bottom:0; padding-left:1.2em;">
+                  <li><b>Provider</b>: Boarding provider</li>
+                  <li><b>Finder</b>: Boarding finder</li>
+                  <li><b>Vendor</b>: Food provider</li>
+                </ul>
+              </div>
               <label class="form-label">Role</label>
               <select class="form-select" name="role" required>
                 <option value="finder">Finder</option>
@@ -84,12 +92,59 @@
               <input type="password" class="form-control" name="password_confirmation" required>
             </div>
 
-            <div class="form-check mb-3">
-              <input type="checkbox" class="form-check-input" id="remember">
-              <label for="remember" class="form-check-label">Remember me</label>
-            </div>
+            <!-- Privacy Policy Modal Trigger -->
+            <button type="button" class="btn btn-dark w-100" id="letsStartBtn" data-bs-toggle="modal" data-bs-target="#privacyModal">Let's Start</button>
 
-            <button type="submit" class="btn btn-dark w-100">Let's Start</button>
+            <!-- Privacy Policy Modal -->
+            <div class="modal fade" id="privacyModal" tabindex="-1" aria-labelledby="privacyModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="privacyModalLabel">Greetings from RentTent! Here is our Policy</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div style="max-height:200px; overflow-y:auto;">
+                     <p><strong>Privacy, Security & Verification Policy – RentTent</strong></p>
+<p>Welcome to RentTent! Your trust is our top priority. Before signing up, please read carefully how we handle your personal information, verification, payments, and interactions on our platform.</p>
+
+<ul>
+  <li><strong>Identity Verification:</strong> We collect your <em>NIC, profile picture, and personal details</em> strictly for identity verification. Verification ensures a safe and trustworthy community.</li>
+
+  <li><strong>Unverified Users:</strong> If your account is <strong>not yet verified</strong>, you will <strong>not be able to post boardings or food menus</strong>, and you <strong>cannot book anything</strong>. Verification is currently done manually by our team. In the future, automated verification will be implemented to process your data securely and efficiently.</li>
+
+  <li><strong>Data Protection:</strong> Your information is <strong>fully protected</strong>. We do <strong>not share, sell, or upload</strong> your data to any third-party applications or websites without your explicit consent.</li>
+
+  <li><strong>Site Security:</strong> RentTent uses advanced security measures, including encryption and secure servers, to ensure your data is always safe. Your privacy is our highest priority.</li>
+
+  <li><strong>Use of Information:</strong> Your information is used to enhance your experience on RentTent, including personalized room and food suggestions, booking confirmations, and improved search results.</li>
+
+  <li><strong>Cookies & Analytics:</strong> We use cookies for session management, login persistence, and analytics to understand user interactions. No sensitive personal data is stored in cookies.</li>
+
+  <li><strong>Payments & Booking Fees:</strong> For bookings, RentTent charges <strong>10% of the rent</strong> as a service fee. Food vendors receive <strong>40% of the booked rent</strong> for meals posted. Users can subscribe to vendors for updates, promotions, and exclusive offers.</li>
+
+  <li><strong>User Rights & Consent:</strong> By signing up, you agree to our Terms of Service and Privacy Policy. You have full control over your data and can request updates, access, or deletion at any time.</li>
+
+  <li><strong>Transparency & Trust:</strong> Your personal information is used only to make RentTent secure, reliable, and enjoyable. You are always informed about how your data is handled.</li>
+
+  <li><strong>Contact & Support </strong> For any questions or concerns about privacy, verification, or security, our support team is ready to assist. Your trust matters, and we are here to ensure a safe experience for every user.</li>
+</ul>
+
+<p>By using RentTent, you confirm that you understand and agree to our policies, verification process, payment rules, and subscription practices. Together, we create a safe, secure, and reliable platform for finding rooms, boardings, and food services.</p>
+
+                    </div>
+                    <div class="form-check mt-3">
+                      <input type="checkbox" class="form-check-input" id="agreeTerms">
+                      <label for="agreeTerms" class="form-check-label">I agree to the terms and conditions</label>
+                    </div>
+                    <div id="agreeMsg" class="text-danger mt-2" style="display:none;">Agree the terms to continue</div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn w-100" id="continueBtn" style="background-color: #b0b0b0; color: #fff;" disabled>Continue</button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </form>
 
           <div class="text-center mt-3">
@@ -136,4 +191,87 @@
     </div>
   </div>
 </div>
-@endsection
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var agreeTerms = document.getElementById('agreeTerms');
+  var continueBtn = document.getElementById('continueBtn');
+  var agreeMsg = document.getElementById('agreeMsg');
+  var signupForm = document.querySelector('form');
+
+  // Helper to show error popup
+  function showError(msg) {
+    var errorModal = document.createElement('div');
+    errorModal.className = 'modal fade';
+    errorModal.id = 'errorModal';
+    errorModal.innerHTML = `
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header bg-danger text-white">
+            <h5 class="modal-title">Error</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>${msg}</p>
+          </div>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(errorModal);
+    var modal = new bootstrap.Modal(errorModal);
+    modal.show();
+    errorModal.addEventListener('hidden.bs.modal', function() {
+      errorModal.remove();
+    });
+  }
+
+  if (agreeTerms && continueBtn && agreeMsg && signupForm) {
+    agreeTerms.addEventListener('change', function() {
+      if (agreeTerms.checked) {
+        continueBtn.style.backgroundColor = '#0a174e';
+        continueBtn.disabled = false;
+        agreeMsg.style.display = 'none';
+      } else {
+        continueBtn.style.backgroundColor = '#b0b0b0';
+        continueBtn.disabled = true;
+        agreeMsg.style.display = 'block';
+      }
+    });
+    continueBtn.addEventListener('click', function() {
+      if (!agreeTerms.checked) {
+        agreeMsg.style.display = 'block';
+        return;
+      }
+      // Validate all required fields
+      var requiredFields = [
+        {name: 'name', label: 'Username'},
+        {name: 'email', label: 'Email'},
+        {name: 'phone', label: 'Mobile Number'},
+        {name: 'nic_number', label: 'National ID'},
+        {name: 'nic_image', label: 'NIC Image'},
+        {name: 'role', label: 'Role'},
+        {name: 'location', label: 'Location'},
+        {name: 'password', label: 'Password'},
+        {name: 'password_confirmation', label: 'Confirm Password'}
+      ];
+      for (var i = 0; i < requiredFields.length; i++) {
+        var field = signupForm.querySelector('[name="' + requiredFields[i].name + '"]');
+        if (!field || (field.type === 'file' ? !field.files.length : !field.value.trim())) {
+          showError(requiredFields[i].label + ' is required.');
+          return;
+        }
+      }
+      // Password match validation
+      var password = signupForm.querySelector('[name="password"]');
+      var confirm = signupForm.querySelector('[name="password_confirmation"]');
+      if (password.value !== confirm.value) {
+        showError('Passwords do not match.');
+        return;
+      }
+      // If all valid, submit and redirect to login
+  signupForm.submit();
+  // After successful signup, backend should redirect to login page. Remove client-side redirect.
+    });
+  }
+});
+</script>

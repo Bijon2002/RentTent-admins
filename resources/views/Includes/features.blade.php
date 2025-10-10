@@ -1,4 +1,7 @@
 <!-- Add AOS CSS and JS -->
+<marquee behavior="scroll" direction="left" scrollamount="6" style="background:#0a0f29; color:#b8860b; padding:10px; font-weight:bold; font-size:16px; border-radius:5px;">
+  Highly Secured Platform | Manual Verification Required (Automated Coming Soon) | Post & Book Rooms with 10% Booking Fee | Vendors Earn 40% on Booked Meals | NIC & Profile Pic for Identity Verification | No Data Shared with Third Parties | Users Can Subscribe to Food Vendors for Offers & Updates
+</marquee>
 <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 <script>
@@ -14,7 +17,7 @@
 <!-- What is RentTent -->
 <section class="renttent-section text-center py-5">
   <div class="container">
-    <h2 class="section-title">What is RentTent?</h2>
+    <h2 class="section-title">What is RentTent..?</h2>
     <p class="section-desc">
       RentTent is a premium boarding rental platform that connects room seekers with verified hosts and local food vendors, 
       creating a complete living ecosystem for modern professionals and students.

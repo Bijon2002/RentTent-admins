@@ -136,22 +136,29 @@ window.onclick = function(event) {
   <p class="text-center mb-4" style="font-size:1.1rem; color: #ffd600;">Delicious meals from trusted local vendors.</p>
   <div class="row row-cols-1 row-cols-md-3 g-3 justify-content-center">
 
-    <!-- Food Vendor Suggestions (12 cards) -->
-    @for ($i = 1; $i <= 12; $i++)
-      <div class="col-xl-3 col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="fade-up">
-        <div class="card dark-neo-card square-card food-vendor-card w-100 h-100" style="aspect-ratio: 1/1;">
-          <div class="square-img-container">
-            <img src="https://images.unsplash.com/photo-1559847844-5315695dadae?auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="Food Vendor {{ $i }}">
-          </div>
-          <div class="card-body bg-dark-2">
-            <h5 class="card-title text-warning neon-text-hover">Food Vendor {{ $i }}</h5>
-            <p class="card-text text-muted">Descriptions for vendor {{ $i }}</p>
-            <div class="d-flex justify-content-between align-items-center mt-3">
-              <span class="badge bg-warning text-dark fs-6 py-2 px-3">{{ '123-456-78' . sprintf('%02d', $i) }}</span>
-              <button class="btn btn-sm btn-outline-warning neon-hover">Menu</button>
+    @if(isset($foodVendors) && $foodVendors->count() > 0)
+        @foreach($foodVendors as $vendor)
+          <div class="col-xl-3 col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="fade-up">
+            <div class="card dark-neo-card square-card food-vendor-card w-100 h-100" style="aspect-ratio: 1/1;">
+              <div class="square-img-container">
+                <img src="{{ $vendor->image_url }}" class="card-img-top" alt="{{ $vendor->name }}">
+              </div>
+              <div class="card-body bg-dark-2">
+                <h5 class="card-title text-warning neon-text-hover">{{ $vendor->name }}</h5>
+                <p class="card-text text-muted">{{ $vendor->description }}</p>
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                  <span class="badge bg-warning text-dark fs-6 py-2 px-3">
+                    {{ $vendor->monthly_fee ? '$'.$vendor->monthly_fee : 'Call' }}
+                  </span>
+                  <button class="btn btn-sm btn-outline-warning neon-hover">Menu</button>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-    @endfor
+        @endforeach
+    @else
+        <p class="text-center text-muted">No food vendors available at the moment.</p>
+    @endif
+
+  </div>
 </div>
