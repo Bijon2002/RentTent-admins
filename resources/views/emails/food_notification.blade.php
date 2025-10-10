@@ -11,6 +11,6 @@
     <p><strong>Monthly Fee:</strong> Rs. {{ number_format($foodPackage->monthly_fee, 2) }}</p>
     <p><strong>Start Date:</strong> {{ $foodPackage->start_date }}</p>
     <p><strong>End Date:</strong> {{ $foodPackage->end_date }}</p>
-    <p>Thank you for using RentTent! 🚀</p>
+    <p>Thank you for using RentTent...! 🚀</p>
 </body>
 </html>
