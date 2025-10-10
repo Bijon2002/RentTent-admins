@@ -145,7 +145,7 @@ window.onclick = function(event) {
           </div>
           <div class="card-body bg-dark-2">
             <h5 class="card-title text-warning neon-text-hover">Food Vendor {{ $i }}</h5>
-            <p class="card-text text-muted">Description for vendor {{ $i }}</p>
+            <p class="card-text text-muted">Descriptions for vendor {{ $i }}</p>
             <div class="d-flex justify-content-between align-items-center mt-3">
               <span class="badge bg-warning text-dark fs-6 py-2 px-3">{{ '123-456-78' . sprintf('%02d', $i) }}</span>
               <button class="btn btn-sm btn-outline-warning neon-hover">Menu</button>
