@@ -1,16 +1,20 @@
 @extends('layouts.master')
 
 @section('stats')
-  @include('includes.stats')
 @endsection
 
 @section('content')
 <div class="user-management-section">
   <div class="section-header">
     <h2>Registered Users</h2>
-    <div class="search-container">
-      <input type="text" placeholder="Search users..." class="search-input" id="searchInput">
-      <i class="bi bi-search"></i>
+    <div class="header-actions">
+      <button class="btn-create" onclick="openCreateModal('user')">
+        <i class="bi bi-plus-circle"></i> Create User
+      </button>
+      <div class="search-container">
+        <input type="text" placeholder="Search users..." class="search-input" id="searchInput">
+        <i class="bi bi-search"></i>
+      </div>
     </div>
   </div>
 
@@ -59,6 +63,9 @@
           </td>
           <td>
             <div class="action-buttons">
+              <button type="button" class="btn-edit" onclick="editUser({{ $user['user_id'] }})">
+                <i class="bi bi-pencil"></i> Edit
+              </button>
               <button type="button" class="btn-verify" data-bs-toggle="modal" data-bs-target="#verifyModal{{ $user['user_id'] }}">
                 <i class="bi bi-eye-fill"></i> Verify
               </button>
@@ -164,6 +171,7 @@
 <style>
 .user-management-section { background: var(--card-bg); border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.3); border:1px solid rgba(74,107,255,0.1); }
 .section-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; flex-wrap:wrap; gap:1rem; }
+.header-actions { display:flex; gap:1rem; align-items:center; }
 .search-container { position:relative; display:flex; align-items:center; }
 .search-input { background:rgba(30,30,30,0.5); border:1px solid var(--border); border-radius:0.5rem; padding:0.75rem 1rem 0.75rem 2.5rem; width:250px; color:var(--text); }
 .search-container i { position:absolute; left:1rem; color:var(--text-light); }
@@ -175,12 +183,33 @@
 .verification-status { display:inline-flex; align-items:center; gap:0.5rem; padding:0.35rem 0.75rem; border-radius:1rem; font-size:0.8rem; font-weight:500; }
 .verification-status.verified { background: rgba(0,230,118,0.1); color:#00e676; }
 .verification-status.pending { background: rgba(255,193,7,0.1); color:#ffc107; }
-.action-buttons { display:flex; gap:0.75rem; }
-.btn-verify, .btn-delete { padding:0.5rem 0.75rem; border-radius:0.5rem; font-size:0.8rem; font-weight:500; display:inline-flex; align-items:center; gap:0.35rem; border:none; cursor:pointer; transition:all 0.3s; }
+.action-buttons { display:flex; gap:0.5rem; flex-wrap:wrap; }
+.btn-create {
+  background: linear-gradient(90deg, #10b981, #059669);
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+.btn-create:hover {
+  background: linear-gradient(90deg, #059669, #047857);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.5);
+  transform: translateY(-2px);
+}
+.btn-edit, .btn-verify, .btn-delete { padding:0.5rem 0.75rem; border-radius:0.5rem; font-size:0.8rem; font-weight:500; display:inline-flex; align-items:center; gap:0.35rem; border:none; cursor:pointer; transition:all 0.3s; }
+.btn-edit { background: linear-gradient(90deg, #3b82f6, #2563eb); color: white; }
+.btn-edit:hover { background: linear-gradient(90deg, #2563eb, #1d4ed8); box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4); transform: translateY(-1px); }
 .btn-verify { background:rgba(74,107,255,0.1); color:var(--primary-light); border:1px solid var(--primary); }
 .btn-verify:hover { background:var(--primary); color:white; box-shadow:0 0 10px rgba(74,107,255,0.5); }
-.btn-delete { background: rgba(244,67,54,0.1); color:#f44336; border:1px solid rgba(244,67,54,0.3); }
-.btn-delete:hover { background:#f44336; color:white; box-shadow:0 0 10px rgba(244,67,54,0.3); }
+.btn-delete { background: linear-gradient(90deg, #ef4444, #dc2626); color: white; }
+.btn-delete:hover { background: linear-gradient(90deg, #dc2626, #b91c1c); box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4); transform: translateY(-1px); }
 
 /* MODAL FIX */
 .custom-modal-dialog { max-width:700px; width:90%; margin:0 auto; }
@@ -246,5 +275,15 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 });
+
+function openCreateModal(type) {
+  if (type === 'user') {
+    window.location.href = "{{ route('admin.users.create') }}";
+  }
+}
+
+function editUser(id) {
+  window.location.href = `{{ url('admin/users') }}/${id}/edit`;
+}
 </script>
 @endsection
