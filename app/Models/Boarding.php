@@ -46,5 +46,14 @@ public function photos()
 {
     return $this->hasMany(RoomPhoto::class, 'boarding_id', 'boarding_id');
 }
+public function provider()
+{
+    return $this->belongsTo(User::class, 'user_id', 'user_id');
+}
+public function bookings()
+{
+    return $this->hasMany(Booking::class, 'boarding_id', 'boarding_id');
+}
+
 
 }

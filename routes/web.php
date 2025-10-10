@@ -3,6 +3,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AdminFoodController;
 use App\Http\Controllers\Admin\BoardingListController;
+use App\Http\Controllers\Admin\BookingController;
 use App\Http\Controllers\Admin\LoginController;
 
 Route::get('/', function () {
@@ -44,5 +45,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::post('/properties/approve/{id}', [BoardingListController::class, 'approve'])->name('properties.approve');
     Route::delete('/properties/destroy/{id}', [BoardingListController::class, 'destroy'])->name('properties.destroy');
 
+    //booking
+    Route::get('bookings', [BookingController::class, 'index'])->name('bookings');
+    Route::get('bookings/{id}/edit', [BookingController::class, 'edit'])->name('bookings.edit');
+    Route::put('bookings/{id}', [BookingController::class, 'update'])->name('bookings.update');
+    Route::delete('bookings/{id}', [BookingController::class, 'destroy'])->name('bookings.destroy');
 });
 
