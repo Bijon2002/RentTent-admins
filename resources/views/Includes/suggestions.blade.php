@@ -157,7 +157,7 @@ window.onclick = function(event) {
           </div>
         @endforeach
     @else
-        <p class="text-center text-muted">No food vendors available at the moment.</p>
+        <p class="text-center text-muted">No food vendors available at the moment...</p>
     @endif
 
   </div>

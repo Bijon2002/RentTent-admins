@@ -8,7 +8,7 @@
           <img src="{{ asset('img/logo2.png') }}" alt="RentTent Logo" class="me-2" style="height:40px;" />
           <span class="text-white fw-bold fs-4" style="letter-spacing: 1px;">RentTent</span>
         </div>
-        <p class="text-white-50 mb-4">Discover your perfect getaways with RentTent. We offer premium properties and food plans for unforgettable experiences in nature's lap..</p>
+        <p class="text-white-50 mb-4">Discover your perfect getaways with RentTent, We offer premium properties and food plans for unforgettable experiences in nature's lap..</p>
         <div class="social-icons d-flex gap-3">
           <a href="#" class="social-icon facebook rounded-circle d-flex align-items-center justify-content-center">
             <i class="fab fa-facebook-f"></i>

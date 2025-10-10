@@ -11,7 +11,7 @@
 
     <!-- QR Code Display -->
     <div class="my-4">
-        <h5>Scan this QR code:</h5>
+        <h5>Scan this QR code: </h5>
         <div>{!! $qr_image !!}</div>
     </div>
 </div>
