@@ -10,7 +10,7 @@
     }
 @endphp
 
-<div class="d-flex align-items-center justify-content-center w-100 py-5" 
+<div class="d-flex align-items-center justify-content-center w-100 py-5"
      style="min-height:100vh; margin-top:2cm;"
      data-aos="fade-up" data-aos-duration="1200">
 
@@ -24,7 +24,7 @@
                 <img src="{{ $user && $user->profile_pic ? asset('storage/' . $user->profile_pic) : asset('img/default-user.png') }}"
                      class="rounded-circle border border-4 border-white shadow squircle-img"
                      style="width:150px; height:150px; object-fit:cover;">
-                <button class="btn btn-primary rounded-circle p-2 position-absolute bottom-0 end-0" 
+                <button class="btn btn-primary rounded-circle p-2 position-absolute bottom-0 end-0"
                         data-bs-toggle="modal" data-bs-target="#profileModal"
                         style="width:40px; height:40px;">
                     <i class="bi bi-pencil-fill"></i>
@@ -51,46 +51,46 @@
             <div class="col-md-6 mb-3">
                 <div class="glass-card p-3 h-100">
                     <h6 class="fw-bold text-primary mb-3">Personal Information</h6>
-                    
+
                     <div class="d-flex justify-content-between border-bottom py-2">
                         <strong>Email</strong>
                         <span>{{ $user->email ?? 'N/A' }}</span>
                     </div>
-                    
+
                     <div class="d-flex justify-content-between border-bottom py-2">
                         <strong>Phone</strong>
                         <span>{{ $user->phone ?? 'N/A' }}</span>
                     </div>
-                    
+
                     <div class="d-flex justify-content-between border-bottom py-2">
                         <strong>NIC</strong>
                         <span>{{ $user->nic_number ?? 'N/A' }}</span>
                     </div>
-                    
+
                     <div class="d-flex justify-content-between py-2">
                         <strong>Location</strong>
                         <span>{{ $user->location ?? 'N/A' }}</span>
                     </div>
                 </div>
             </div>
-            
+
             <div class="col-md-6 mb-3">
                 <div class="glass-card p-3 h-100">
                     <h6 class="fw-bold text-primary mb-3">Account Status</h6>
-                    
+
                     <div class="d-flex justify-content-between border-bottom py-2">
                         <strong>Verification</strong>
                         <span class="badge bg-{{ strtolower($user->verification_status) === 'verified' ? 'success' : 'warning' }}">
                             {{ ucfirst($user->verification_status ?? 'pending') }}
                         </span>
                     </div>
-                    
+
                     @if($user && $user->nic_image)
                     <div class="mt-3">
                         <strong>NIC Image:</strong>
                         <div class="mt-2">
-                            <img src="{{ asset('storage/' . $user->nic_image) }}" 
-                                 alt="NIC Image" 
+                            <img src="{{ asset('storage/' . $user->nic_image) }}"
+                                 alt="NIC Image"
                                  class="img-fluid rounded-3 border"
                                  style="max-height: 120px;">
                         </div>
@@ -125,7 +125,7 @@
                             <input type="email" class="form-control" id="email" name="email" value="{{ auth()->user()->email }}">
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="phone" class="form-label">Phone</label>
+                            <label for="phone" class="form-label">Phone No</label>
                             <input type="text" class="form-control" id="phone" name="phone" value="{{ auth()->user()->phone }}">
                         </div>
                         <div class="col-md-6 mb-3">
