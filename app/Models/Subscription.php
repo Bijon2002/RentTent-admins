@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
+use App\Models\FoodMenu;
 
 class Subscription extends Model
 {
     use HasFactory;
 
-    // ✅ Mass assignable fields
     protected $fillable = [
         'user_id',
         'vendor_id',  // food_menu id
@@ -18,19 +19,18 @@ class Subscription extends Model
         'payment_info',
     ];
 
-    // ✅ Auto convert JSON <-> array
     protected $casts = [
         'payment_info' => 'array',
     ];
 
-    // ✅ Ensure created_at & updated_at are automatically managed
     public $timestamps = true;
 
     // =======================
     // Relation to User
     // =======================
     public function user() {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        // ✅ Use actual PK 'user_id' in users table
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
     }
 
     // =======================

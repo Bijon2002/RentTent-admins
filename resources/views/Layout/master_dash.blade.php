@@ -149,12 +149,13 @@
 
             <!-- Finder -->
             @if(auth()->check() && auth()->user()->role === 'finder')
-              <li class="nav-item">
-                <a href="#" id="sidebarBoardingList" class="nav-link text-light">Boarding List</a>
-              </li>
-              <li class="nav-item">
-                <a href="#" id="sidebarSubscribedFoods" class="nav-link text-light">Subscribed Foods</a>
-              </li>
+             <li class="nav-item">
+    <a href="{{ route('finder.booked.boardings') }}" class="nav-link text-light">Booked Boardings</a>
+</li>
+<li class="nav-item">
+    <a href="{{ route('finder.subscribed.foods') }}" class="nav-link text-light">Subscribed Foods</a>
+</li>
+
             @endif
 
         
@@ -253,5 +254,6 @@
 
     chatClose.addEventListener('click', () => { chatWindow.style.display = 'none'; });
   </script>
+     @stack('scripts')
 </body>
 </html>

@@ -37,13 +37,13 @@ class SubscriptionController extends Controller
         ]);
 
         // 3️⃣ Store subscription
-        $subscription = Subscription::create([
-            'user_id' => Auth::id(),
-            'vendor_id' => $menu->menu_id, 
-            'amount' => $menu->monthly_fee,
-            'status' => 'active',
-            'payment_info' => $paymentInfo,
-        ]);
+      $subscription = Subscription::create([
+    'user_id' => Auth::user()->user_id, // ✅ fixed
+    'vendor_id' => $menu->menu_id, 
+    'amount' => $menu->monthly_fee,
+    'status' => 'active',
+    'payment_info' => $paymentInfo, // array cast
+]);
 
         // 4️⃣ Generate QR code
         $qr_data = json_encode([

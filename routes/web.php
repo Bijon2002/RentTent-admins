@@ -93,8 +93,19 @@ Route::middleware(['auth'])->group(function() {
     Route::post('/booking/book/{boarding}', [BookingController::class, 'book'])->name('booking.book');
 });
 
+use App\Http\Controllers\API\UserController;
+
 // Show all boarding bookings for logged-in user
 Route::get('/user/boardings', [UserController::class, 'myBoardings'])->name('user.boardings');
 
 // Show all subscribed food packages
 Route::get('/user/subscriptions', [UserController::class, 'mySubscriptions'])->name('user.subscriptions');
+
+
+use App\Http\Controllers\FinderController;
+// Finder dashboard links
+Route::get('/finder/booked-boardings', [FinderController::class, 'bookedBoardings'])->name('finder.booked.boardings');
+Route::get('/finder/subscribed-foods', [FinderController::class, 'subscribedFoods'])->name('finder.subscribed.foods');
+
+// This is the CORRECT route
+Route::delete('/subscription/{id}/cancel', [FinderController::class, 'cancelSubscription'])->name('subscription.cancel');
