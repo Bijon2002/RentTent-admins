@@ -138,7 +138,7 @@ body { font-family: 'Poppins', sans-serif; background:#f5f5f5; }
             <div class="detail-group">
                 <div class="detail-label">📍 Location</div>
                 <div class="detail-value">{{ $boarding->location }}</div>
-                <div class="detail-label">💰 Monthly Rent</div>
+                <div class="detail-label">💰 Monthly Rent:</div>
                 <div class="detail-value">Rs. {{ number_format($boarding->monthly_rent, 2) }}</div>
                 <div class="detail-label">🚪 Room Type</div>
                 <div class="detail-value">{{ ucfirst($boarding->room_type) }}</div>
