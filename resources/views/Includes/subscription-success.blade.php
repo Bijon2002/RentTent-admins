@@ -5,7 +5,7 @@
 @section('content')
 <div class="container py-4">
     <h2>Subscription Successful! 🎉</h2>
-    <p>You have successfully subscribed to   <strong>{{ $menu->name }}</strong> by {{ $menu->user->name }}.</p>
+    <p>You have successfully subscribed to  <strong>{{ $menu->name }}</strong> by {{ $menu->user->name }}.</p>
     <p>Amount: Rs. {{ number_format($menu->monthly_fee, 2) }}</p>
     <p>Start Date: {{ $menu->start_date }} | End Date: {{ $menu->end_date }}</p>
 
