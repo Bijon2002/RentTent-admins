@@ -30,19 +30,20 @@ WORKDIR /var/www/html
 # ---------------- Copy Project ----------------
 COPY . /var/www/html
 
-# ---------------- Remove dev-only Pail safely ----------------
-RUN composer remove laravel/pail --dev || true
-
-# ---------------- Install PHP Dependencies (prod only) ----------------
-RUN composer install --no-dev --optimize-autoloader --no-scripts --no-interaction
+# ---------------- Install PHP Dependencies (include dev for local) ----------------
+RUN composer install --optimize-autoloader --no-interaction --no-scripts
 
 # ---------------- Ensure .env Exists ----------------
 RUN if [ ! -f .env ]; then cp .env.example .env; fi
 
-# ---------------- Clear Laravel Caches (prod-safe) ----------------
-RUN php artisan config:clear || true \
-    && php artisan cache:clear || true \
-    && php artisan route:clear || true \
+# ---------------- Install Collision (dev helper) ----------------
+RUN composer require --dev nunomaduro/collision:^8.8 || true
+RUN composer dump-autoload -o
+
+# ---------------- Clear Laravel Caches ----------------
+RUN php artisan config:clear \
+    && php artisan cache:clear \
+    && php artisan route:clear \
     && php artisan view:clear || true
 
 # ---------------- Generate Laravel Key ----------------
