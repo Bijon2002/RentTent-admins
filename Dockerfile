@@ -1,10 +1,13 @@
-# Stage 1: Base PHP with Apache
+# Stage 0: Base PHP + Apache
 FROM php:8.2-apache
 
 # Set working directory
 WORKDIR /var/www/html
 
-# Install system dependencies and PHP extensions needed for Laravel
+# Avoid interactive prompts
+ARG DEBIAN_FRONTEND=noninteractive
+
+# Install system dependencies and PHP extensions
 RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
@@ -12,25 +15,39 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libzip-dev \
     zip unzip git curl \
+    libpq-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd pdo pdo_mysql pdo_pgsql mbstring zip opcache \
+    && docker-php-ext-install -j$(nproc) \
+        gd \
+        pdo \
+        pdo_mysql \
+        pdo_pgsql \
+        mbstring \
+        zip \
+        opcache \
     && a2enmod rewrite \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copy project files into container
-COPY . .
+# Enable PHP OPcache recommended settings
+RUN { \
+        echo 'opcache.enable=1'; \
+        echo 'opcache.enable_cli=1'; \
+        echo 'opcache.memory_consumption=128'; \
+        echo 'opcache.interned_strings_buffer=8'; \
+        echo 'opcache.max_accelerated_files=4000'; \
+        echo 'opcache.revalidate_freq=2'; \
+        echo 'opcache.validate_timestamps=1'; \
+    } > /usr/local/etc/php/conf.d/opcache-recommended.ini
 
-# Install Composer from official Composer image
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Copy project files (if using multi-stage builds, you can skip this in dev)
+COPY . /var/www/html
 
-# Install PHP dependencies (Laravel)
-RUN composer install --no-dev --optimize-autoloader --prefer-dist
+# Set proper permissions
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html
 
-# Set permissions for storage and cache
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
-    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
-
-# Expose port 80 for HTTP
+# Expose Apache port
 EXPOSE 80
 
 # Start Apache in foreground
