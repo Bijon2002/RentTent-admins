@@ -1,22 +1,28 @@
-# Use official PHP image with Apache
+# Stage 1: Base PHP with Apache
 FROM php:8.2-apache
-
-# Install PHP extensions Laravel needs
-RUN docker-php-ext-install pdo pdo_mysql
-
-# Enable Apache mod_rewrite for Laravel routes
-RUN a2enmod rewrite
-
-# Copy project into the container
-COPY . /var/www/html
 
 # Set working directory
 WORKDIR /var/www/html
 
+# Install system dependencies and PHP extensions needed for Laravel
+RUN apt-get update && apt-get install -y \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    libonig-dev \
+    libzip-dev \
+    zip unzip git curl \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd pdo pdo_mysql pdo_pgsql mbstring zip opcache \
+    && a2enmod rewrite
+
+# Copy project files into container
+COPY . .
+
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Install dependencies
+# Install PHP dependencies (Laravel)
 RUN composer install --no-dev --optimize-autoloader
 
 # Set permissions for storage and cache
