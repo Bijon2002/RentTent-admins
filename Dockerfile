@@ -1,23 +1,19 @@
 # ---------------- Base Image ----------------
 FROM php:8.2-apache
 
-# ---------------- Install System Dependencies ----------------
+# ---------------- System Dependencies ----------------
 RUN apt-get update && apt-get install -y \
-    git \
-    unzip \
-    libzip-dev \
-    zip \
-    curl \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev \
+    git unzip libzip-dev zip curl libpng-dev libonig-dev libxml2-dev \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip \
     && a2enmod rewrite
 
-# ---------------- Set ServerName to stop warning ----------------
+# ---------------- Install Composer ----------------
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# ---------------- Apache ServerName ----------------
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
-# ---------------- Opcache Recommended Settings ----------------
+# ---------------- Opcache Settings ----------------
 RUN { \
     echo 'opcache.enable=1'; \
     echo 'opcache.enable_cli=1'; \
@@ -34,10 +30,27 @@ WORKDIR /var/www/html
 # ---------------- Copy Project ----------------
 COPY . /var/www/html
 
-# ---------------- Set Permissions ----------------
+# ---------------- Remove dev-only Pail safely ----------------
+RUN composer remove laravel/pail --dev || true
+
+# ---------------- Install PHP Dependencies (prod only) ----------------
+RUN composer install --no-dev --optimize-autoloader --no-scripts --no-interaction
+
+# ---------------- Ensure .env Exists ----------------
+RUN if [ ! -f .env ]; then cp .env.example .env; fi
+
+# ---------------- Clear Laravel Caches (prod-safe) ----------------
+RUN php artisan config:clear || true \
+    && php artisan cache:clear || true \
+    && php artisan route:clear || true \
+    && php artisan view:clear || true
+
+# ---------------- Generate Laravel Key ----------------
+RUN php artisan key:generate --ansi || true
+
+# ---------------- Fix Permissions ----------------
 RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html \
-    && chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 # ---------------- Apache Document Root ----------------
 RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
@@ -45,5 +58,5 @@ RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available
 # ---------------- Expose Port ----------------
 EXPOSE 80
 
-# ---------------- Start Apache in Foreground ----------------
+# ---------------- Start Apache ----------------
 CMD ["apache2-foreground"]
