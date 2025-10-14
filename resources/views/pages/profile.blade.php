@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @extends('Layout.master_dash')
 
 @section('content')
@@ -176,3 +177,5 @@
 
 @endsection
 >>>>>>> f5cbcfb68cd8625b004de01d362194b118ef6be0
+=======
+>>>>>>> 13bcfc4250f19caec8fccf6698d7dcadfe1f6862
