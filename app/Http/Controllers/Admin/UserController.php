@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use App\Models\User;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\VerificationStatusMail;
+
 
 class UserController extends AdminBaseController
 {
@@ -50,83 +53,27 @@ class UserController extends AdminBaseController
 
     // Verify / Reject user (direct DB)
     public function verify(Request $request, $user_id)
-    {
-        $request->validate([
-            'verification_status' => 'required|in:Pending,Verified,Rejected'
-        ]);
+{
+    $request->validate([
+        'verification_status' => 'required|in:Pending,Verified,Rejected'
+    ]);
 
-        $user = User::find($user_id);
-        if (!$user) return back()->with('error', 'User not found');
+    $user = User::find($user_id);
+    if (!$user) return back()->with('error', 'User not found');
 
-        $user->verification_status = $request->verification_status;
-        $user->save();
+    $user->verification_status = $request->verification_status;
+    $user->save();
 
-        return redirect()->route('admin.users.index')
-                         ->with('success', "User verification updated to {$request->verification_status}");
+    // Send mail if Rejected
+    if ($request->verification_status == 'Rejected') {
+        Mail::to($user->email)->send(
+            new VerificationStatusMail('Rejected', 'Unclear image provided')
+        );
     }
 
-    // Show create user form
-    public function create()
-    {
-        $authCheck = $this->checkAdminAuth();
-        if ($authCheck) return $authCheck;
-
-        $statsData = $this->getStatsData();
-        return view('admin.create_user', $statsData);
-    }
-
-    // Store new user
-    public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'phone' => 'required|string|max:20',
-            'nic_number' => 'required|string|max:20|unique:users,nic_number',
-            'location' => 'nullable|string|max:255',
-            'role' => 'required|in:finder,provider,vendor',
-            'verification_status' => 'required|in:Pending,Verified,Rejected',
-            'password' => 'required|string|min:8',
-        ]);
-
-        $data = $request->all();
-        $data['password'] = bcrypt($request->password);
-        
-        User::create($data);
-
-        return redirect()->route('admin.users.index')->with('success', 'User created successfully.');
-    }
-
-    // Show edit user form
-    public function edit($user_id)
-    {
-        $authCheck = $this->checkAdminAuth();
-        if ($authCheck) return $authCheck;
-
-        $user = User::findOrFail($user_id);
-        $statsData = $this->getStatsData();
-        return view('admin.edit_user', array_merge(compact('user'), $statsData));
-    }
-
-    // Update user
-    public function update(Request $request, $user_id)
-    {
-        $user = User::findOrFail($user_id);
-        
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $user_id . ',user_id',
-            'phone' => 'required|string|max:20',
-            'nic_number' => 'required|string|max:20|unique:users,nic_number,' . $user_id . ',user_id',
-            'location' => 'nullable|string|max:255',
-            'role' => 'required|in:finder,provider,vendor',
-            'verification_status' => 'required|in:Pending,Verified,Rejected',
-        ]);
-
-        $user->update($request->all());
-
-        return redirect()->route('admin.users.index')->with('success', 'User updated successfully.');
-    }
+    return redirect()->route('admin.users.index')
+                     ->with('success', "User verification updated to {$request->verification_status}");
+}
 
     // Delete user (direct DB)
     public function destroy($user_id)
