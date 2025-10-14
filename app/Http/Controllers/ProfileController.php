@@ -19,3 +19,5 @@ class ProfileController extends Controller
         if (!$user) {
             return redirect()->back()->with('error', 'User not found!');
         }
+
+        
