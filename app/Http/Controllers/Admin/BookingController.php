@@ -40,8 +40,8 @@ class BookingController extends AdminBaseController
             'boarding_id' => 'required|exists:boarding_list,boarding_id',
             'amount' => 'required|numeric|min:0',
             'status' => 'required|in:pending,confirmed,cancelled,completed',
-            'reserved_at' => 'required|date',
-            'booked_at' => 'required|date',
+            'reserved_at' => 'required|date|nullable',
+            'booked_at' => 'required|date|nullable',
         ]);
 
         $data = $request->all();

@@ -10,9 +10,7 @@
   <div class="section-header">
     <h2>Bookings</h2>
     <div class="header-actions">
-      <button class="btn-create" onclick="openCreateModal('booking')">
-        <i class="bi bi-plus-circle"></i> Create Booking
-      </button>
+  
       <div class="search-container">
         <input type="text" placeholder="Search bookings..." class="search-input" id="bookingSearch">
         <i class="bi bi-search"></i>
@@ -50,9 +48,7 @@
           <td>{{ $booking->booked_at }}</td>
           <td>
             <div class="action-buttons">
-              <a href="{{ route('admin.bookings.edit', $booking->id) }}" class="btn-edit">
-                <i class="bi bi-pencil"></i> Edit
-              </a>
+           
               <form action="{{ route('admin.bookings.destroy', $booking->id) }}" method="POST" style="display:inline;">
                 @csrf @method('DELETE')
                 <button type="submit" class="btn-delete" onclick="return confirm('Are you sure?')">
@@ -75,9 +71,7 @@
   <div class="section-header">
     <h2>Subscriptions</h2>
     <div class="header-actions">
-      <button class="btn-create" onclick="openCreateModal('subscription')">
-        <i class="bi bi-plus-circle"></i> Create Subscription
-      </button>
+  
       <div class="search-container">
         <input type="text" placeholder="Search subscriptions..." class="search-input" id="subscriptionSearch">
         <i class="bi bi-search"></i>
@@ -109,9 +103,7 @@
           <td>{{ $sub->created_at->format('Y-m-d H:i') }}</td>
           <td>
             <div class="action-buttons">
-              <button class="btn-edit" onclick="editSubscription({{ $sub->id }})">
-                <i class="bi bi-pencil"></i> Edit
-              </button>
+            
               <form action="{{ route('admin.subscriptions.destroy', $sub->id) }}" method="POST" style="display:inline;">
                 @csrf @method('DELETE')
                 <button type="submit" class="btn-delete" onclick="return confirm('Are you sure?')">

@@ -8,9 +8,6 @@
     <div class="section-header">
         <h2>Registered Boarding Properties</h2>
         <div class="header-actions">
-            <button class="btn-create" onclick="openCreateModal('property')">
-                <i class="bi bi-plus-circle"></i> Create Property
-            </button>
             <div class="search-container">
                 <input type="text" placeholder="Search properties..." class="search-input" id="searchInput">
                 <i class="bi bi-search"></i>
@@ -117,25 +114,6 @@
 .verification-status.verified { background: rgba(0,230,118,0.1); color:#00e676; }
 .verification-status.pending { background: rgba(255,193,7,0.1); color:#ffc107; }
 .action-buttons { display:flex; gap:0.5rem; flex-wrap:wrap; }
-.btn-create {
-  background: linear-gradient(90deg, #10b981, #059669);
-  color: white;
-  border: none;
-  border-radius: 0.5rem;
-  padding: 0.5rem 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
-}
-.btn-create:hover {
-  background: linear-gradient(90deg, #059669, #047857);
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.5);
-  transform: translateY(-2px);
-}
 .btn-edit, .btn-verify, .btn-delete { padding:0.5rem 0.75rem; border-radius:0.5rem; font-size:0.8rem; font-weight:500; display:inline-flex; align-items:center; gap:0.35rem; border:none; cursor:pointer; transition:all 0.3s; }
 .btn-edit { background: linear-gradient(90deg, #3b82f6, #2563eb); color: white; }
 .btn-edit:hover { background: linear-gradient(90deg, #2563eb, #1d4ed8); box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4); transform: translateY(-1px); }
@@ -157,9 +135,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function openCreateModal(type) {
-  if (type === 'property') {
-    window.location.href = "{{ route('admin.properties.create') }}";
-  }
 }
 
 function editProperty(id) {

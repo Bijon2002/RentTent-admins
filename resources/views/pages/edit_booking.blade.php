@@ -65,8 +65,8 @@
                 <label for="status">Status</label>
                 <select name="status" id="status" required>
                     <option value="">Select Status</option>
-                    <option value="pending" {{ old('status', $booking->status) == 'pending' ? 'selected' : '' }}>Pending</option>
-                    <option value="confirmed" {{ old('status', $booking->status) == 'confirmed' ? 'selected' : '' }}>Confirmed</option>
+                    <option value="pending" {{ old('status', $booking->status) == 'reserved' ? 'selected' : '' }}>reserved</option>
+                    <option value="confirmed" {{ old('status', $booking->status) == 'booked' ? 'selected' : '' }}>booked</option>
                     <option value="cancelled" {{ old('status', $booking->status) == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
                     <option value="completed" {{ old('status', $booking->status) == 'completed' ? 'selected' : '' }}>Completed</option>
                 </select>
