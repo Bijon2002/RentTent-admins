@@ -49,7 +49,6 @@
       animation: fadeInSlide 0.8s ease forwards;
       color: #e0e7ff;
       user-select: none;
-      margin: auto;
     }
 
     @keyframes fadeInSlide {
@@ -187,11 +186,13 @@
    
   </div>
 <br>
-  <div class="login-container">
-    <!-- Your logo image -->
-    <img src="{{ asset('images/logo2.png') }}" alt="RentTent Logo" class="logo" />
+  <!-- Center the login container -->
+  <div class="d-flex justify-content-center align-items-center min-vh-100">
+    <div class="login-container">
+      <!-- Your logo image -->
+      <img src="{{ asset('images/logo2.png') }}" alt="RentTent Logo" class="logo" />
 
-    <h3>Admin Login</h3>
+      <h3>Admin Login</h3>
 
     <form method="POST" action="{{ route('admin.login.post') }}">
       @csrf
@@ -248,6 +249,7 @@
         Login
       </button>
     </form>
+    </div>
   </div>
 
   <!-- Bootstrap JS Bundle -->

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use App\Models\User;
@@ -10,7 +9,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\VerificationStatusMail;
 
 
-class UserController extends Controller
+class UserController extends AdminBaseController
 {
     private $apiUrl = "http://127.0.0.1:8001/api"; // User project API for images
     private $token  = "1|KM6z0xFl4T2pKGW2sELviH1pJcjUo891i5pQFlnD002a272e";
@@ -18,6 +17,9 @@ class UserController extends Controller
     // List all users
     public function index()
     {
+        $authCheck = $this->checkAdminAuth();
+        if ($authCheck) return $authCheck;
+
         $users = User::all(); // Direct DB for other data
 
         // Fetch images from API
@@ -43,7 +45,10 @@ class UserController extends Controller
             }
         }
 
-        return view('pages.users', compact('users'));
+        // Get stats data for the header
+        $statsData = $this->getStatsData();
+
+        return view('pages.users', array_merge(compact('users'), $statsData));
     }
 
     // Verify / Reject user (direct DB)

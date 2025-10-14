@@ -7,55 +7,92 @@
 @endsection
 
 @section('content')
-  @include('includes.slideshow')
-
-  <div style="display: flex; gap: 3rem; margin-top: 3rem;">
-    {{-- Recent Activities --}}
-    <div style="flex: 1; background: var(--card-bg); padding: 1.5rem; border-radius: 0.75rem; box-shadow: 0 4px 20px rgba(0,0,0,0.3); border: 1px solid rgba(74,107,255,0.1); overflow-y: auto; max-height: 400px;">
-      <div class="section-header">
-        <h2>Recent Activities</h2>
-      </div>
-      <div class="activities-list">
-        <div class="activity">
-          <div class="activity-content">New booking for Koramangala Premium by Priya Sharma</div>
-          <div class="activity-time">2 minutes ago</div>
-        </div>
-        <div class="activity">
-          <div class="activity-content">Property verification completed for HSR Layout Studio</div>
-          <div class="activity-time">15 minutes ago</div>
-        </div>
-        <div class="activity">
-          <div class="activity-content">Payment received ₹18,000 from Arjun Patel</div>
-          <div class="activity-time">1 hour ago</div>
-        </div>
-        <div class="activity">
-          <div class="activity-content">Maintenance request reported for Whitefield Co-living</div>
-          <div class="activity-time">2 hours ago</div>
-        </div>
-      </div>
+  <div class="dashboard-flex-wrap">
+    <div class="dashboard-graphs-col">
+      @include('includes.slideshow')
     </div>
-
-    {{-- Quick Actions --}}
-    <div style="flex: 1; background: var(--card-bg); padding: 1.5rem; border-radius: 0.75rem; box-shadow: 0 4px 20px rgba(0,0,0,0.3); border: 1px solid rgba(74,107,255,0.1);">
-      <div class="section-header">
-        <h2>Quick Actions</h2>
+    <div class="dashboard-activities-col">
+      <div class="section-header" style="margin-bottom: 1rem;">
+        <h2 style="font-size: 1.15rem; letter-spacing: 0.5px;">Recent Activities</h2>
       </div>
-      <div class="action-buttons" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-        <button class="action-btn" onclick="openModal('add-property')">
-          <span>🏠</span> Add Property
-        </button>
-        <button class="action-btn" onclick="openModal('verify-user')">
-          <span>👤</span> Verify User
-        </button>
-        <button class="action-btn" onclick="openModal('schedule-inspection')">
-          <span>📅</span> Schedule Inspection
-        </button>
-        <button class="action-btn" onclick="openModal('send-announcement')">
-          <span>📢</span> Send Announcement
-        </button>
-      </div>
+  <marquee behavior="scroll" direction="up" scrollamount="3" style="height: 320px; display: block; padding: 0 0.5rem; color: red;">
+        @forelse($recentBookings as $booking)
+          <span style="display: block; margin-bottom: 1.2rem;">
+            <strong>New booking for {{ $booking->boarding->title ?? 'Unknown Property' }}</strong> by {{ $booking->user->name ?? 'Unknown User' }}<br>
+            <small>Amount: ${{ number_format($booking->amount, 2) }} | Status: {{ ucfirst($booking->status) }} | {{ $booking->created_at->diffForHumans() }}</small>
+          </span>
+        @empty
+          <span style="display: block; margin-bottom: 1.2rem;">No recent bookings found</span>
+        @endforelse
+        @if($recentUsers->count() > 0)
+          <span style="display: block; margin-bottom: 1.2rem;">
+            <strong>Recent User Registrations:</strong>
+            @foreach($recentUsers as $user)
+              <br><small>{{ $user->name }} ({{ $user->role }}) - {{ $user->created_at->diffForHumans() }}</small>
+            @endforeach
+            <br><span style="color: #4a6bff; font-size: 0.95em;">Live data</span>
+          </span>
+        @endif
+      </marquee>
     </div>
   </div>
+
+  <style>
+    .dashboard-flex-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 2.5rem;
+      margin-top: 2.5rem;
+      flex-wrap: wrap;
+    }
+    .dashboard-graphs-col {
+      flex: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 320px;
+      max-width: 900px;
+      width: 100%;
+    }
+    .dashboard-activities-col {
+      flex: 1;
+      min-width: 320px;
+      max-width: 400px;
+      background: var(--card-bg);
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      border: 1px solid rgba(74,107,255,0.1);
+      padding: 1.5rem;
+      margin-top: 0;
+    }
+    @media (max-width: 1024px) {
+      .dashboard-flex-wrap {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 2rem;
+      }
+      .dashboard-graphs-col, .dashboard-activities-col {
+        max-width: 100%;
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .dashboard-activities-col {
+        margin-top: 0;
+      }
+      /* The .charts-container and .quick-stats-grid are now self-responsive */
+    }
+    @media (max-width: 700px) {
+      .dashboard-flex-wrap {
+        gap: 1.2rem;
+        margin-top: 1.2rem;
+      }
+      .dashboard-activities-col {
+        padding: 1rem;
+      }
+    }
+  </style>
 @endsection
 
 @push('scripts')

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard - Button Testing</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+        .test-section { background: white; padding: 20px; margin: 10px 0; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .btn { padding: 8px 16px; margin: 5px; border: none; border-radius: 4px; cursor: pointer; text-decoration: none; display: inline-block; }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-success { background: #28a745; color: white; }
+        .btn-warning { background: #ffc107; color: black; }
+        .btn-danger { background: #dc3545; color: white; }
+        .btn-info { background: #17a2b8; color: white; }
+        .result { margin: 10px 0; padding: 10px; border-radius: 4px; }
+        .result.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .result.error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Admin Dashboard Button Testing</h1>
+    
+    <div class="test-section">
+        <h3>📊 Navigation Buttons</h3>
+        <a href="#" class="btn btn-primary" onclick="testNavigation('dashboard')">Dashboard</a>
+        <a href="#" class="btn btn-primary" onclick="testNavigation('users')">Users</a>
+        <a href="#" class="btn btn-primary" onclick="testNavigation('properties')">Properties</a>
+        <a href="#" class="btn btn-primary" onclick="testNavigation('vendors')">Vendors</a>
+        <a href="#" class="btn btn-primary" onclick="testNavigation('bookings')">Bookings</a>
+        <div id="nav-result"></div>
+    </div>
+
+    <div class="test-section">
+        <h3>➕ Create Buttons</h3>
+        <a href="#" class="btn btn-success" onclick="testCreate('user')">Create User</a>
+        <a href="#" class="btn btn-success" onclick="testCreate('property')">Create Property</a>
+        <a href="#" class="btn btn-success" onclick="testCreate('vendor')">Create Vendor</a>
+        <a href="#" class="btn btn-success" onclick="testCreate('booking')">Create Booking</a>
+        <div id="create-result"></div>
+    </div>
+
+    <div class="test-section">
+        <h3>✏️ Edit/Action Buttons</h3>
+        <a href="#" class="btn btn-warning" onclick="testEdit('user', 1)">Edit User</a>
+        <a href="#" class="btn btn-warning" onclick="testEdit('property', 1)">Edit Property</a>
+        <a href="#" class="btn btn-info" onclick="testApprove('property', 1)">Approve Property</a>
+        <a href="#" class="btn btn-info" onclick="testVerify('user', 1)">Verify User</a>
+        <div id="action-result"></div>
+    </div>
+
+    <div class="test-section">
+        <h3>🗑️ Delete Buttons</h3>
+        <a href="#" class="btn btn-danger" onclick="testDelete('user', 1)">Delete User</a>
+        <a href="#" class="btn btn-danger" onclick="testDelete('property', 1)">Delete Property</a>
+        <a href="#" class="btn btn-danger" onclick="testDelete('vendor', 1)">Delete Vendor</a>
+        <div id="delete-result"></div>
+    </div>
+
+    <div class="test-section">
+        <h3>🔍 Search Functionality</h3>
+        <input type="text" placeholder="Search users..." id="userSearch" onkeyup="testSearch('users')">
+        <input type="text" placeholder="Search properties..." id="propertySearch" onkeyup="testSearch('properties')">
+        <div id="search-result"></div>
+    </div>
+
+    <script>
+        function showResult(containerId, message, type = 'success') {
+            const container = document.getElementById(containerId);
+            container.innerHTML = `<div class="result ${type}">${message}</div>`;
+        }
+
+        function testNavigation(page) {
+            // Simulate navigation test
+            const baseUrl = window.location.origin + '/admin/';
+            const url = baseUrl + page;
+            showResult('nav-result', `✅ Navigation to ${page} would redirect to: ${url}`);
+        }
+
+        function testCreate(type) {
+            // Simulate create button test
+            const routes = {
+                'user': '/admin/users/create',
+                'property': '/admin/properties/create',
+                'vendor': '/admin/vendors/create',
+                'booking': '/admin/bookings/create'
+            };
+            showResult('create-result', `✅ Create ${type} would redirect to: ${routes[type]}`);
+        }
+
+        function testEdit(type, id) {
+            // Simulate edit button test
+            const routes = {
+                'user': `/admin/users/${id}/edit`,
+                'property': `/admin/properties/${id}/edit`,
+                'vendor': `/admin/vendors/${id}/edit`
+            };
+            showResult('action-result', `✅ Edit ${type} would redirect to: ${routes[type]}`);
+        }
+
+        function testApprove(type, id) {
+            showResult('action-result', `✅ Approve ${type} ${id} would submit POST request to approve endpoint`);
+        }
+
+        function testVerify(type, id) {
+            showResult('action-result', `✅ Verify ${type} ${id} would open verification modal/form`);
+        }
+
+        function testDelete(type, id) {
+            showResult('delete-result', `⚠️ Delete ${type} ${id} would show confirmation dialog then submit DELETE request`, 'error');
+        }
+
+        function testSearch(table) {
+            const input = document.getElementById(table === 'users' ? 'userSearch' : 'propertySearch');
+            const value = input.value;
+            if (value.length > 0) {
+                showResult('search-result', `🔍 Searching ${table} for: "${value}" - Filter would be applied to table rows`);
+            } else {
+                showResult('search-result', `🔍 Search cleared for ${table} - All rows would be visible`);
+            }
+        }
+
+        // Initial load message
+        document.addEventListener('DOMContentLoaded', function() {
+            showResult('nav-result', '🚀 Ready to test navigation buttons!');
+            showResult('create-result', '🚀 Ready to test create buttons!');
+            showResult('action-result', '🚀 Ready to test edit/action buttons!');
+            showResult('delete-result', '🚀 Ready to test delete buttons!');
+            showResult('search-result', '🚀 Ready to test search functionality!');
+        });
+    </script>
+</body>
+</html>
