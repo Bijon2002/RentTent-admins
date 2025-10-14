@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Booking Notification</title>
+    <title>Booking Notification!</title>
 </head>
 <body>
     <h2>Hello {{ $booking->user->name }},</h2>

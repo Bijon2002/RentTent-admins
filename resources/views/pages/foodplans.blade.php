@@ -6,7 +6,7 @@
 <style>
 :root {
     --primary: #0a174e;
-    --primary-dark: #001f54; 
+    --primary-dark: #001f54;
     --gradient-blue: linear-gradient(135deg, #0a174e, #20378a);
     --secondary: #FF9800;
     --danger: #f44336;
@@ -17,9 +17,9 @@
     --radius: 8px;
 }
 
-body { 
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-    background: #f8f9fa; 
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f8f9fa;
     color: var(--dark);
     line-height: 1.6;
 }
@@ -30,7 +30,7 @@ body {
 .sidebar {
     background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); padding: 1.2rem; flex: 0 0 250px;
     /* FIX 1: Make sidebar sticky on desktop */
-    position: sticky; 
+    position: sticky;
     top: 20px;
 }
 /* FIX 2: Mobile Overlay Styles for sidebar */
@@ -71,14 +71,14 @@ body {
 .price-inputs input { flex: 1; padding: 0.4rem; border: 1px solid #ddd; border-radius: var(--radius); font-size: 0.9rem; }
 
 /* FIX 3: Filter buttons sticky on mobile */
-.filter-buttons { 
-    display: flex; gap: 0.6rem; margin-top: 1rem; 
-    padding-top: 1rem; border-top: 1px solid #eee; 
+.filter-buttons {
+    display: flex; gap: 0.6rem; margin-top: 1rem;
+    padding-top: 1rem; border-top: 1px solid #eee;
 }
 @media(max-width: 991px) {
     .filter-buttons {
-        position: fixed; 
-        bottom: 0; 
+        position: fixed;
+        bottom: 0;
         left: 0;
         width: 100%;
         padding: 1rem 1.2rem;
@@ -94,15 +94,15 @@ body {
 
 .main-content { flex: 1; }
 
-.hero { 
-    position: relative; 
+.hero {
+    position: relative;
     height: 350px; /* Kept at 350px, but removed the conflicting margin-top from the HTML section */
-    background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80'); 
-    background-size: cover; 
-    background-position: center; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
+    background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     margin-top: -1cm;
 }
@@ -115,40 +115,40 @@ body {
 .btn-darkblue:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
 
 /* FIX 4: Increased max width for better desktop space utilization */
-.container { 
-    max-width: 1400px; 
-    margin: 0 auto; 
-    padding: 1.5rem; 
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 1.5rem;
 }
 
 /* FIX 5: Vendors Grid - Ensuring 3-in-a-row on desktop */
-.vendors { 
-    display: grid; 
-    grid-template-columns: 1fr; 
-    gap: 1.2rem; 
+.vendors {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
 }
 @media(min-width: 768px){ .vendors { grid-template-columns: 1fr 1fr; } }
 @media(min-width: 1200px){ .vendors { grid-template-columns: 1fr 1fr 1fr; } } /* 3-in-a-row for wide screens */
 
-.vendor-card { 
-    background: #fff; 
-    padding: 1.2rem; 
-    border-radius: var(--radius); 
-    box-shadow: var(--shadow); 
-    transition: 0.3s; 
-    display: flex; 
-    flex-direction: column; 
+.vendor-card {
+    background: #fff;
+    padding: 1.2rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    transition: 0.3s;
+    display: flex;
+    flex-direction: column;
     height: 100%; /* Important for same height rows */
 }
 .vendor-card:hover { transform: translateY(-5px); box-shadow: 0 8px 16px rgba(0,0,0,0.15); }
 
 /* FIX 6: Image Aspect Ratio for uniform height and alignment (Slightly landscape, 16:10) */
-.vendor-image { 
-    width: 100%; 
+.vendor-image {
+    width: 100%;
     aspect-ratio: 16 / 10; /* Fixed aspect ratio for uniform height */
-    object-fit: cover; 
-    border-radius: var(--radius); 
-    margin-bottom: 0.8rem; 
+    object-fit: cover;
+    border-radius: var(--radius);
+    margin-bottom: 0.8rem;
     height: auto;
 }
 
@@ -172,7 +172,7 @@ body {
 <div class="hero">
     <div class="hero-content">
         <h2>Discover Amazing Food</h2>
-        <p>From local favorites to gourmet experiences, delivered right to your door</p>
+        <p>From local favorites to gourmet experiences, Delivered right to your door.</p>
         <button class="btn btn-darkblue"><i class="fas fa-search"></i> Explore Now</button>
     </div>
 </div>
@@ -180,7 +180,7 @@ body {
 
 <div class="container">
     <button class="btn btn-darkblue mobile-filter-btn" id="filterToggle"><i class="fas fa-filter"></i> Show Filters</button>
-    
+
     <div class="main-container">
         <aside class="sidebar" id="filterSidebar">
             <div class="sidebar-header">
@@ -241,7 +241,7 @@ body {
                     <img src="{{ asset('storage/' . $menu->image_url) }}" alt="{{ $menu->name }}" class="vendor-image">
                     <div class="vendor-header">
                         <h3 class="vendor-name">{{ $menu->name }}</h3>
-                        @if($menu->is_open ?? true) 
+                        @if($menu->is_open ?? true)
                            <span class="status-badge status-open">Open</span>
                         @else
                            <span class="status-badge status-closed">Closed</span>
@@ -270,18 +270,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const filterToggle = document.getElementById('filterToggle');
     const filterSidebar = document.getElementById('filterSidebar');
     const closeFilters = document.getElementById('closeFilters');
-    
+
     // Use class toggling for responsive sidebar visibility
     filterToggle.addEventListener('click', function() {
         filterSidebar.classList.toggle('show-filter');
         // Hide button when sidebar is open to prevent double-up
-        filterToggle.style.display = 'none'; 
+        filterToggle.style.display = 'none';
     });
 
     closeFilters.addEventListener('click', function() {
         filterSidebar.classList.remove('show-filter');
         // Show button when sidebar is closed
-        filterToggle.style.display = 'block'; 
+        filterToggle.style.display = 'block';
     });
 
     // Reset filters

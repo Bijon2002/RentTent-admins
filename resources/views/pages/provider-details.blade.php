@@ -132,13 +132,13 @@ body { font-family: 'Poppins', sans-serif; background:#f5f5f5; }
     <!-- Boarding Details -->
     <div class="boarding-detail-card">
         <i class="fas fa-heart favorite-icon"></i>
-        <h2 class="details-section-title">Boarding Information</h2>
+        <h2 class="details-section-title">Boarding Informations</h2>
         <div class="details-columns">
             <!-- LEFT COLUMN -->
             <div class="detail-group">
                 <div class="detail-label">📍 Location</div>
                 <div class="detail-value">{{ $boarding->location }}</div>
-                <div class="detail-label">💰 Monthly Rent</div>
+                <div class="detail-label">💰 Monthly Rent:</div>
                 <div class="detail-value">Rs. {{ number_format($boarding->monthly_rent, 2) }}</div>
                 <div class="detail-label">🚪 Room Type</div>
                 <div class="detail-value">{{ ucfirst($boarding->room_type) }}</div>

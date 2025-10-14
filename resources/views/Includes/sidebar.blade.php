@@ -6,7 +6,7 @@
      style="background: url('{{ asset('assets/images/home1.jpg') }}') center/cover;">
   <div class="content position-absolute slide-content slide-content-first">
     <h2 class="text-white display-4 fw-bold mb-3 neon-text">Premium Camping</h2>
-    <p class="text-light-blue fs-3">Luxury tents with premium amenities</p>
+    <p class="text-light-blue fs-3">Luxury tents with premium amenities,</p>
   </div>
 </div>
 

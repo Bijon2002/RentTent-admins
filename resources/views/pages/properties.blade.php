@@ -52,7 +52,7 @@ body {
         z-index: 1000;
         overflow-y: auto;
         border-radius: 0;
-        display: none; 
+        display: none;
         padding-bottom: 5rem;
     }
     .sidebar.show-filter {
@@ -84,13 +84,13 @@ body {
     gap: 0.6rem;
     margin-top: 1rem;
     padding-top: 1rem;
-    border-top: 1px solid #eee; 
+    border-top: 1px solid #eee;
 }
 @media(max-width: 991px) {
     /* Make buttons stick to bottom on mobile overlay */
     .filter-buttons {
-        position: fixed; 
-        bottom: 0; 
+        position: fixed;
+        bottom: 0;
         left: 0;
         width: 100%;
         padding: 1rem 1.2rem;
@@ -124,46 +124,46 @@ body {
 .btn-darkblue:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
 
 /* FIX: Increased max width for better space utilization on large screens (Laptops/Desktops) */
-.container { 
-    max-width: 1400px; 
-    margin: 0 auto; 
-    padding: 1.5rem; 
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 1.5rem;
 }
 
 /* FIX: Properties Grid for 2-in-a-row alignment on laptops */
-.properties { 
-    display: grid; 
-    grid-template-columns: 1fr; 
-    gap: 1.2rem; 
+.properties {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
 }
-@media(min-width: 768px){ 
+@media(min-width: 768px){
     /* 2 columns for tablets */
-    .properties { grid-template-columns: 1fr 1fr; } 
+    .properties { grid-template-columns: 1fr 1fr; }
 }
-@media(min-width: 992px){ 
+@media(min-width: 992px){
     /* 2 columns for laptops/desktops, giving maximum width to cards */
-    .properties { grid-template-columns: 1fr 1fr; } 
+    .properties { grid-template-columns: 1fr 1fr; }
 }
 
 /* Property Card Adjustments for reduced height/density */
-.property-card { 
-    background: #fff; 
+.property-card {
+    background: #fff;
     padding: 0.8rem; /* Reduced padding slightly */
-    border-radius: var(--radius); 
-    box-shadow: var(--shadow); 
-    transition: 0.3s; 
-    display: flex; 
-    flex-direction: column; 
-    height: 100%; 
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    transition: 0.3s;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 .property-card:hover { transform: translateY(-5px); box-shadow: 0 8px 16px rgba(0,0,0,0.15); }
 
 /* Image Aspect Ratio - Set to 2:1 (shorter height) */
-.property-image { 
-    width: 100%; 
-    aspect-ratio: 2 / 1; 
-    object-fit: cover; 
-    border-radius: var(--radius); 
+.property-image {
+    width: 100%;
+    aspect-ratio: 2 / 1;
+    object-fit: cover;
+    border-radius: var(--radius);
     margin-bottom: 0.6rem; /* Reduced margin */
     height: auto;
 }
@@ -201,23 +201,23 @@ body {
 <div class="hero">
     <div class="hero-content">
         <h2>Discover Properties</h2>
-        <p>Find your perfect boarding or rental near you!</p>
+        <p>Find Your Perfect Boarding Or Rental Near You!</p>
         <button class="btn btn-darkblue"><i class="fas fa-search"></i> Explore Now</button>
     </div>
 </div>
 
 <div class="container">
     <button class="btn btn-darkblue mobile-filter-btn" id="filterToggle"><i class="fas fa-filter"></i> Show Filters</button>
-    
+
     <div class="main-container">
         <aside class="sidebar" id="filterSidebar">
             <div class="sidebar-header">
-                <h3 class="sidebar-title">Filters</h3>
+                <h3 class="sidebar-title">Filter</h3>
                 <span class="close-filters" id="closeFilters" style="display: none;"><i class="fas fa-times"></i></span>
             </div>
 
             <div class="filter-group">
-                <div class="filter-title">Boarding Type</div>
+                <div class="filter-title">Boarding Types</div>
                 <div class="filter-options">
                     <label class="filter-checkbox"><input type="checkbox" name="boarding_type" value="single"> Single</label>
                     <label class="filter-checkbox"><input type="checkbox" name="boarding_type" value="shared"> Shared</label>
@@ -236,13 +236,13 @@ body {
             </div>
 
             <div class="filter-group">
-                <div class="filter-title">Availability</div>
+                <div class="filter-title">Availabilities</div>
                 <div class="filter-options">
                     <label class="filter-checkbox"><input type="checkbox" name="availability" value="available"> Available</label>
                     <label class="filter-checkbox"><input type="checkbox" name="availability" value="unavailable"> Unavailable</label>
                 </div>
             </div>
-            
+
             <div class="filter-group">
                 <div class="filter-title">Room Size</div>
                 <div class="filter-options">
@@ -260,7 +260,7 @@ body {
                     <label class="filter-checkbox"><input type="checkbox" name="attached_bathroom" value="yes"> Attached Bathroom</label>
                 </div>
             </div>
-            
+
             <div class="filter-buttons">
                 <button class="btn-apply" id="applyFilters">Apply Filters</button>
                 <button class="btn-reset" id="resetFilters">Reset</button>
@@ -330,7 +330,7 @@ document.addEventListener('DOMContentLoaded', function() {
     filterToggle.addEventListener('click', function() {
         filterSidebar.classList.toggle('show-filter');
         // Show close button when sidebar is open
-        closeFilters.style.display = 'block'; 
+        closeFilters.style.display = 'block';
     });
 
     // Close filter sidebar for mobile view
@@ -345,7 +345,7 @@ document.addEventListener('DOMContentLoaded', function() {
         btn.addEventListener('click', function() {
             this.classList.toggle('liked');
             const heartIcon = this.querySelector('i');
-            
+
             // Toggle between solid (fas) and regular (far) heart icon
             if (this.classList.contains('liked')) {
                 heartIcon.classList.remove('far');
