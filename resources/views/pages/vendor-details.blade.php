@@ -104,7 +104,7 @@
                 <p><i class="fas fa-map-marker-alt"></i>{{ $menu->user->location ?? 'Location not available' }}</p>
             </div>
         </div>
-        
+
         <h2 class="details-section-title">Menu Details</h2>
 
         <div class="details-grid">
@@ -206,7 +206,7 @@
                             <span>Rs. {{ number_format($menu->monthly_fee, 2) }}</span>
                         </div>
                         <button type="submit" class="btn btn-purchase w-100 py-2">
-                            <i class="fas fa-lock"></i> Secure Purchase
+                            <i class="fas fa-lock"></i> Secure Purchases
                         </button>
                     </div>
                 </div>

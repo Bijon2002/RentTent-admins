@@ -127,7 +127,7 @@
 
   <li><strong>Transparency & Trust:</strong> Your personal information is used only to make RentTent secure, reliable, and enjoyable. You are always informed about how your data is handled.</li>
 
-  <li><strong>Contact & Support:</strong> For any questions or concerns about privacy, verification, or security, our support team is ready to assist. Your trust matters, and we are here to ensure a safe experience for every user.</li>
+  <li><strong>Contact & Support </strong> For any questions or concerns about privacy, verification, or security, our support team is ready to assist. Your trust matters, and we are here to ensure a safe experience for every user.</li>
 </ul>
 
 <p>By using RentTent, you confirm that you understand and agree to our policies, verification process, payment rules, and subscription practices. Together, we create a safe, secure, and reliable platform for finding rooms, boardings, and food services.</p>
@@ -163,7 +163,7 @@
                 <img src="{{ asset('assets/images/food.jpg') }}" class="d-block w-100 h-100 object-fit-cover" alt="Slide 2">
               </div>
               <div class="carousel-item h-100">
-                <img src="{{ asset('assets/images/park.jpg') }}" class="d-block w-100 h-100 object-fit-cover" alt="Slide 3">
+                <img src="{{ asset('assets/images/park.jpeg') }}" class="d-block w-100 h-100 object-fit-cover" alt="Slide 3">
               </div>
               <div class="carousel-item h-100">
                 <img src="{{ asset('assets/images/yog.jpg') }}" class="d-block w-100 h-100 object-fit-cover" alt="Slide 4">

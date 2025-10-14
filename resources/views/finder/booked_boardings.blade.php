@@ -129,7 +129,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p class="mb-2">Are you sure you want to cancel this booking? Please select a reason below.</p>
+                    <p class="mb-2">Are you sure you want to cancel this booking?.. Please select a reason below.</p>
                     <select name="cancellation_reason" class="form-select" required>
                         <option value="" disabled selected>-- Select a reason --</option>
                         <option value="change_of_plans">My plans have changed</option>
