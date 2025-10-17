@@ -90,13 +90,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::post('users/{user}/verify', [UserController::class, 'verify'])->name('users.verify');
 
     // --- Vendors ---
-    Route::get('vendors', [AdminFoodController::class, 'index'])->name('vendors');
-    Route::get('vendors/create', [AdminFoodController::class, 'create'])->name('vendors.create');
-    Route::post('vendors', [AdminFoodController::class, 'store'])->name('vendors.store');
-    Route::get('vendors/{id}/edit', [AdminFoodController::class, 'edit'])->name('vendors.edit');
-    Route::put('vendors/{id}', [AdminFoodController::class, 'update'])->name('vendors.update');
-    Route::post('vendors/{id}/approve', [AdminFoodController::class, 'approve'])->name('vendors.approve');
-    Route::delete('vendors/{id}', [AdminFoodController::class, 'destroy'])->name('vendors.destroy');
+    Route::prefix('admin')->middleware('auth')->group(function () {
+    Route::get('/vendors', [AdminFoodController::class, 'index'])->name('admin.vendors');
+    Route::get('/vendors/create', [AdminFoodController::class, 'create'])->name('admin.vendors.create');
+    Route::post('/vendors', [AdminFoodController::class, 'store'])->name('admin.vendors.store');
+    Route::get('/vendors/{id}/edit', [AdminFoodController::class, 'edit'])->name('admin.vendors.edit');
+    Route::put('/vendors/{id}', [AdminFoodController::class, 'update'])->name('admin.vendors.update');
+    Route::delete('/vendors/{id}', [AdminFoodController::class, 'destroy'])->name('admin.vendors.destroy');
+    Route::patch('/vendors/{id}/toggle', [AdminFoodController::class, 'toggleApproval'])->name('admin.vendors.toggle');
+});
+
 
     // --- Properties ---
     Route::get('properties', [BoardingListController::class, 'index'])->name('properties');
