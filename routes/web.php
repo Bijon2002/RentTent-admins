@@ -98,6 +98,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::put('/vendors/{id}', [AdminFoodController::class, 'update'])->name('admin.vendors.update');
     Route::delete('/vendors/{id}', [AdminFoodController::class, 'destroy'])->name('admin.vendors.destroy');
     Route::patch('/vendors/{id}/toggle', [AdminFoodController::class, 'toggleApproval'])->name('admin.vendors.toggle');
+    Route::get('/vendors/{id}', [AdminFoodController::class, 'show'])->name('admin.vendors.show');
+    Route::post('/vendors/{id}/duplicate', [AdminFoodController::class, 'duplicate'])->name('admin.vendors.duplicate');
+    Route::patch('/vendors/{id}/toggle', [AdminFoodController::class, 'toggleApproval'])->name('admin.vendors.toggle');
+
 });
 
 

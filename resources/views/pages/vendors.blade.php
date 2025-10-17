@@ -144,6 +144,42 @@
 .btn-verify:hover { background:var(--primary); color:white; box-shadow:0 0 10px rgba(74,107,255,0.5); }
 .btn-delete { background: linear-gradient(90deg, #ef4444, #dc2626); color: white; }
 .btn-delete:hover { background: linear-gradient(90deg, #dc2626, #b91c1c); box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4); transform: translateY(-1px); }
+.btn-view {
+    background: linear-gradient(90deg, #fbbf24, #f59e0b);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.btn-view:hover {
+    background: linear-gradient(90deg, #f59e0b, #d97706);
+    box-shadow: 0 2px 8px rgba(251,191,36,0.4);
+    transform: translateY(-1px);
+}
+.btn-duplicate {
+    background: linear-gradient(90deg, #8b5cf6, #7c3aed);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.btn-duplicate:hover {
+    background: linear-gradient(90deg, #7c3aed, #6d28d9);
+    box-shadow: 0 2px 8px rgba(139,92,246,0.4);
+    transform: translateY(-1px);
+}
 </style>
 
 {{-- Search JS --}}
