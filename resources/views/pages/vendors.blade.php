@@ -72,17 +72,41 @@
                         </td>
                         <td>
                             <div class="action-buttons">
-                                <button class="btn-edit" onclick="editVendor({{ $menu->menu_id }})">
+                                <a href="{{ route('admin.vendors.show', ['id' => $menu->menu_id]) }}" class="btn-view" title="View Details">
+                                    <i class="bi bi-eye"></i> View
+                                </a>
+                                <form action="{{ route('admin.vendors.duplicate', ['id' => $menu->menu_id]) }}" method="POST" style="display:inline-block;">
+    @csrf
+    <button type="submit" class="btn-duplicate" title="Duplicate Package">
+        <i class="bi bi-files"></i> Duplicate
+    </button>
+</form>
+<button class="btn-edit" onclick="editVendor({{ $menu->menu_id }})" title="Edit Package">
+    <i class="bi bi-pencil"></i> Edit
+</button>
+<!-- View Details button -->
+    <a href="{{ route('admin.vendors.show', ['id' => $menu->menu_id]) }}" class="btn-view" title="View Details">
+        <i class="bi bi-eye"></i> View
+    </a>
+
+<button class="btn-delete" title="Delete Package" ... >...</button>
+
+
+
+                            <button class="btn-edit" onclick="editVendor({{ $menu->menu_id }})">
                                     <i class="bi bi-pencil"></i> Edit
                                 </button>
                                 @if(!$menu->approved)
                                     {{-- Approve Form --}}
-                                   <form action="{{ route('admin.vendors.approve', ['id' => $menu->menu_id]) }}" method="POST">
-                                        @csrf
-                                        <button type="submit" class="btn-verify">
-                                            <i class="bi bi-check-circle"></i> Approve
-                                        </button>
-                                    </form>
+                                   <form action="{{ route('admin.vendors.toggle', ['id' => $menu->menu_id]) }}" method="POST">
+                                      @csrf
+                                      @method('PATCH')
+                                    <button type="submit" class="btn-verify">
+                                        <i class="bi {{ $menu->approved ? 'bi-x-circle' : 'bi-check-circle' }}"></i>
+                                        {{ $menu->approved ? 'Unapprove' : 'Approve' }}
+                                    </button>
+                                </form>
+
                                 @endif
 
                                 {{-- Delete Form --}}
@@ -180,6 +204,18 @@
     box-shadow: 0 2px 8px rgba(139,92,246,0.4);
     transform: translateY(-1px);
 }
+.action-buttons button, .action-buttons a, .action-buttons form button {
+    margin-right: 0.25rem; /* spacing between buttons */
+}
+
+.btn-verify {
+    min-width: 90px; /* consistent width for toggle */
+}
+
+.btn-view, .btn-duplicate {
+    min-width: 85px; /* uniform button size */
+}
+
 </style>
 
 {{-- Search JS --}}
