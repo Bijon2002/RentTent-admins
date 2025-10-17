@@ -88,12 +88,13 @@
     <a href="{{ route('admin.vendors.show', ['id' => $menu->menu_id]) }}" class="btn-view" title="View Details">
         <i class="bi bi-eye"></i> View
     </a>
+<button type="submit" class="btn-delete" title="Delete Package"
+    onclick="return confirm('Are you sure you want to delete this package?')">
+    <i class="bi bi-trash-fill"></i> Delete
+</button>
 
 <button class="btn-delete" title="Delete Package" ... >...</button>
-
-
-
-                            <button class="btn-edit" onclick="editVendor({{ $menu->menu_id }})">
+<button class="btn-edit" onclick="editVendor({{ $menu->menu_id }})">
                                     <i class="bi bi-pencil"></i> Edit
                                 </button>
                                 @if(!$menu->approved)
@@ -155,6 +156,14 @@
   align-items: center;
   gap: 0.5rem;
   box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+.btn-delete {
+    min-width: 85px; /* match Edit/Approve/View buttons */
+}
+.btn-delete:hover {
+    background: linear-gradient(90deg, #dc2626, #b91c1c);
+    box-shadow: 0 2px 8px rgba(239,68,68,0.4);
+    transform: translateY(-1px);
 }
 .btn-create:hover {
   background: linear-gradient(90deg, #059669, #047857);
