@@ -2,11 +2,13 @@
 <div class="data-visualization-section">
   <div class="section-header">
     <h2>📊 Analytics Dashboard</h2>
-    <div style="display: flex; gap: 0.5rem; align-items: center;">
+    <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
       <div class="refresh-btn" onclick="refreshCharts()">
-        <i class="bi bi-arrow-clockwise"></i> Refresh Data
+        <i class="bi bi-arrow-clockwise"></i> Refresh
       </div>
-      <button class="export-btn" onclick="exportDashboardCSV()" style="background: #007bff; color: #fff; border: none; border-radius: 0.5rem; padding: 0.5rem 1.1rem; font-size: 0.95rem; font-weight: 500; cursor: pointer; transition: background 0.2s;">Export CSV</button>
+      <button class="export-btn" onclick="exportDashboardCSV()">
+        <i class="bi bi-download"></i> Export CSV
+      </button>
     </div>
   </div>
   
@@ -126,6 +128,8 @@ body.dark-mode {
   padding: 2rem;
   border: 1px solid var(--border-color);
   transition: background 0.3s, color 0.3s;
+  width: 100%;
+  max-width: 100%;
 }
 
 .section-header {
@@ -133,22 +137,37 @@ body.dark-mode {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .section-header h2 {
   font-size: 1.5rem;
   font-weight: 600;
   color: var(--text-dark);
+  flex-shrink: 0;
 }
 
 .charts-container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.5rem;
   margin-bottom: 2rem;
 }
 
-@media (max-width: 992px) {
+@media (min-width: 768px) and (max-width: 1199px) {
+  .charts-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
+  .charts-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
   .charts-container {
     grid-template-columns: 1fr;
   }
@@ -163,6 +182,9 @@ body.dark-mode {
   transition: all 0.3s ease;
   opacity: 0;
   transform: translateY(20px);
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
 }
 body.dark-mode .chart-card {
   background: #23283a;
@@ -181,6 +203,7 @@ body.dark-mode .chart-card {
   margin-bottom: 1rem;
   padding-bottom: 0.75rem;
   border-bottom: 1px solid #f1f1f1;
+  flex-shrink: 0;
 }
 
 .chart-header h3 {
@@ -188,16 +211,25 @@ body.dark-mode .chart-card {
   font-weight: 500;
   color: var(--text-dark);
   margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .chart-value {
   font-size: 1.2rem;
   font-weight: 700;
   color: var(--primary-color);
+  flex-shrink: 0;
+  margin-left: 0.5rem;
 }
 
 .chart-content {
   height: 220px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .refresh-btn {
@@ -213,6 +245,7 @@ body.dark-mode .chart-card {
   gap: 0.5rem;
   font-size: 0.9rem;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 .refresh-btn:hover {
@@ -231,10 +264,65 @@ body.dark-mode .chart-card {
   transform: rotate(180deg);
 }
 
+.export-btn {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1.1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.export-btn:hover {
+  background: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+}
+
+@media (max-width: 640px) {
+  .section-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .section-header > div {
+    justify-content: center;
+  }
+
+  .refresh-btn,
+  .export-btn {
+    flex: 1;
+    justify-content: center;
+  }
+}
+
 .quick-stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .quick-stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .quick-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .quick-stats-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .stat-card-mini {
@@ -243,12 +331,13 @@ body.dark-mode .chart-card {
   padding: 1.5rem;
   display: flex;
   align-items: center;
-  gap: 1.25rem;
+  gap: 1rem;
   border: 1px solid var(--border-color);
   box-shadow: var(--card-shadow);
   transition: all 0.3s ease;
   opacity: 0;
   transform: translateY(20px) scale(0.95);
+  min-height: 110px;
 }
 body.dark-mode .stat-card-mini {
   background: #23283a;
@@ -270,6 +359,7 @@ body.dark-mode .stat-card-mini {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 body.dark-mode .stat-icon {
   background: #2c3142;
@@ -278,6 +368,7 @@ body.dark-mode .stat-icon {
 
 .stat-info {
   flex: 1;
+  min-width: 0;
 }
 
 .stat-number {
@@ -285,12 +376,18 @@ body.dark-mode .stat-icon {
   font-weight: 700;
   color: var(--primary-color);
   line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .stat-label {
   font-size: 0.9rem;
   color: var(--text-muted);
   margin-top: 0.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Animations */

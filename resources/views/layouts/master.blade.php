@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>@yield('title', 'RentTent Admin Dashboard')</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
    <style>
     :root {
       --primary: #4a6bff;
@@ -56,8 +57,10 @@
       display: grid;
       grid-template-columns: 1fr;
       gap: 1.5rem;
-      max-width: 1920px; /* broadened to fit all charts comfortably */
+      max-width: 1800px;
       margin: 0 auto;
+      width: 100%;
+      padding: 0 1rem;
     }
 
     /* Header */
@@ -235,9 +238,34 @@
     /* Stats cards */
     .stats-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 1.5rem;
       margin-bottom: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .stats-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (min-width: 1200px) {
+      .stats-grid {
+        grid-template-columns: repeat(6, 1fr);
+      }
+    }
+
+    @media (max-width: 767px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
     .stat-card {
@@ -249,6 +277,11 @@
       border: 1px solid rgba(74, 107, 255, 0.1);
       position: relative;
       overflow: hidden;
+      min-height: 140px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
       opacity: 0;
       transform: translateY(30px) scale(0.95);
       animation: slideUpFade 0.8s ease forwards;
